@@ -1,10 +1,52 @@
 \chapter{Implementazione}
+\section{Codec testuale}
 \label{cap:implementazione_codec}
-Il file sorgente pu\`o essere suddiviso in uno o pi\`u descrizioni, fino a un massimo di 64. Ogni descrizione, presa singolarmente, \`e in grado di descrivere l'intero file. \`E cio\`e sufficiente alla corretta decodifica del file. La codifica di un file in una singola descrizione fa s\`i che la sua corretta decodifica restituisca un file clone del file sorgente. Se, invece, il file sorgente viene codificato in pi\`u di una descrizione, allora sarà possibile la ricostruzione perfetta del file esclusivamente nel caso in cui tutti le descrizioni giungano a destinazione.
-MDSP versione 0.1 sostituisce un carattere \emph{spazio} se una lettera non giunge a destinazione (per i testi), oppure un pixel apportunamente scelto e poi interpolato per ogni pixel non giunto a destinazione (per le immagini). Oltre tali accorgimenti, è necessario prendere in considerazione l'eventualità che giunga a destinazione una singola descrizione con alcuni descrittori errati (caso peggiore). Tale eventualit\`a si risolve facendo s\`i che durante la codifica i descrittori, ma ancor pi\`u le descrizioni, contengano dati provenienti \emph{da tutte le zone del file}. Al fine del raggiungimento di tale scopo, vengono di seguito riportati gli indici necessari e semplici formule per poterli colcolare:
+Nel presente capitolo verrà descritto il funzionamento e l'implementazione
+del codec testuale. L'analisi inizia da alcune considerazioni preliminari sul
+file sorgente riguardanti la suddivisione delle informazioni secondo le
+caratteristiche tipiche delle tecniche a descrizione multipla. Nella
+implementazione di MDSP un file sorgente può essere suddiviso in uno o più
+descrizioni, fino a un massimo di 64. Ogni descrizione, considerata
+singolarmente, è in grado di descrivere l'intero file. \`E cioé sufficiente
+alla corretta decodifica del file sorgente. Qualora il file sorgente venga
+codificato in più di una descrizione sarà possibile la ricostruzione
+perfetta del file esclusivamente nel caso in cui tutti le descrizioni giungano
+a destinazione. Durante la procedura di decodifica del testo, MDSP versione 0.1
+sostituisce un carattere \emph{spazio} qualora una lettera non giunga a
+destinazione. Nel caso della decodifica di immagini viene sostituito il
+pixel non giuntoa destinazione con uno apportunamente scelto e
+poi interpolato. Oltre tali accorgimenti, è necessario prendere in
+considerazione l'eventualità che giunga a destinazione una singola descrizione
+con alcuni descrittori errati (caso peggiore). Tale eventualità si risolve
+facendo sì che durante la codifica i descrittori, ma ancor più le descrizioni,
+contengano dati provenienti 'da tutte le zone del file'. Al fine del
+raggiungimento di tale scopo, vengono di seguito riportati gli indici necessari
+e alcune semplici formule per poterli colcolare:
 \begin{itemize}
  \item Dimensione di ogni descrizione: $$\frac{dimensione\_file}{numero\_descrizioni}$$
  \item Numero di descrittori per ogni descrizione: $$\frac{dimensione\_descrizione}{dimensione\_descrittore}$$
  \item Dimensione di ogni descrittore: $$\frac{dimensione\_descrizione}{numero\_descrittori}$$
 \end{itemize}
-Tali accorgimenti non sono da soli sufficienti per realizzare un codec pienamente compatibile con le specifiche MDC, altri accorgimenti verranno illustrati con maggiore dettaglio nel prossimo capitolo.
+Tali accorgimenti non sono da soli sufficienti per la realizzazione di un codec
+pienamente compatibile MDC, ulteriori accorgimenti verranno illustrati con
+maggiore dettaglio nel capitolo \ref{cap:codec_esempio}.
+\\
+La struttura delle classi C++ di gestione dei codec comprende classi astratte
+che regolano lo scambio di dati tra i codec e il motore di streaming, nonché la
+composizione delle strutture dati in memoria da utilizzare. Le classi a cui ci si riferisce sono contenute nella directory \textit{mdc/src/codecs/}. Di
+seguito vengono elencate e brevemente descritte le classi astratte per la
+gestione dei codec:
+\begin{itemize}
+ \item \textit{abstract\_codec\_parameter.h}: astrae i parametri del codec; per
+ utilizzare tale classe è necessario specificare il comportamento di essa nelle
+ funzioni \textit{serialize()} e \textit{deserialize()}.
+ \item \textit{abstract\_md\_codec.h}: astrae il funzionamento del codec a
+ descrizioni multiple; per utilizzare tale classe è necessario specificare il
+ comportamento di essa nelle funzioni \textit{code()} e \textit{decode()}. In
+ tali funzioni è contenuto il cuore del codec e pertanto necessitano un'analisi
+ più dettagliata, si rimanda al capitolo \ref{cap:codec_esempio}.
+ \item \textit{abstract\_stream.h}: astrae la gestione dei dati specifici per il
+ tipo di file sorgente considerato; per utilizzare tale classe è necessario
+ specificare il comportamento di essa nelle funzioni \textit{load\_from\_disk()}
+ e \textit{save\_to\_disk()}.
+\end{itemize}

@@ -115,23 +115,40 @@ Il Descriptor contiene varie informazioni, come il flusso originario, il numero 
 \section{Codec}
 \label{cap:descrizione_codec}
 Il paradigma di protocollo di streaming a descrittori multipli rende
-necessaria la progettazione di codec su misura. Nel presente capitolo
-verranno introdotti gli accorgimenti necessari alla realizzazione di un codec
-compatibile con MDSP. Viene rimandata al capitolo
+necessaria la progettazione di codec su misura. Viene rimandata al capitolo
 \ref{cap:implementazione_codec} la presentazione, a titolo esplicativo, del
 \emph{codec testuale}.
 
-\section{Caratteristiche del codec}
-Affinch\`e un codec possa funzionare con il protocollo MDC (\emph{Multiple Description Coding}) è necessario che possieda delle caratteristiche ben precise. La codifica MDC ha come obiettivo finale la descrizione di un file in modo tale che, in caso di perdita parziale dei dati che lo costituiscono, il file stesso sia ugualmente interpretabile. L'assoluta interpretabilit\`a del file costituisce un vincolo molto stringente e sono necessari codec con particolari accorgimenti. La versione 0.1 di MDSP gestisce testi semplici e immagini, e consente di visualizzare il contenuto di un file anche se si verificano errori nel trasferimento dello stesso attraverso una rete di telecomunicazione. Durante la fase di codifica il file sorgente viene suddiviso in descrizioni (chiamate anche flussi) e descrittori:
+\subsection{Caratteristiche del codec}
+Affinché un codec possa funzionare con il protocollo MDC (\emph{Multiple
+Description Coding}) è necessario che possieda delle caratteristiche ben
+precise. La codifica MDC ha come obiettivo finale la descrizione di un file in
+modo tale che, in caso di perdita parziale dei dati che lo costituiscono, il
+file stesso sia ugualmente interpretabile. L'assoluta interpretabilità del
+file costituisce un vincolo molto stringente e si rendono necessari codec
+progettati con particolari accorgimenti. MDSP versione 0.1 gestisce file di
+tipo testuale e immagini, consente di visualizzare il contenuto di un file anche
+se si verificano errori nel trasferimento dello stesso attraverso una rete di telecomunicazione. Durante la fase di codifica il file sorgente viene suddiviso in descrizioni e descrittori:
 \begin{itemize}
- \item Un descrittore \`e la pi\`u piccola unit\`a di misura del contenuto di un file. L'insieme di pi\`u descrittori costituisce una descrizione.
- \item Una descrizione pu\`o contenere parte o tutte le informazioni di un file (con ``informazioni'' si intendono i dati costituenti il file).
+ \item Un descrittore è la più piccola unità di misura del contenuto di un
+ file. L'insieme di più descrittori costituisce una descrizione.
+ \item Una descrizione può contenere parte o tutte le informazioni di un file
+ (con `informazioni' si intendono i dati costituenti il file).
 \end{itemize}
 Le descrizioni costituiscono differenti codifiche e devono essere il più possibile ortogonali fra loro, in modo da poter essere indipendenti l'una dall'altra, pur riferendosi tutte allo stesso file sorgente.
 
-Nel caso in cui qualche descrizione venga persa, sia corrotta, o non venga inviata dalla sorgente, sarà comunque possibile decodificare il file ed otterene un output sufficientemente corretto, tale da poter essere intepretato. \`E sufficiente la ricezione di una sola descrizione per la corretta ricostruzione del file sorgente. La ricezione di due o pi\`u descrizioni migliora l'accuratezza del file decodificato. Il file sorgente viene ``\emph{descritto}'' con pi\`u precisione.  Tale risultato viene raggiunto grazie alla creazione di codec che tengono in considerazione il fattore umano nell'interpretazione di vari tipi di informazioni:
+Nel caso in cui qualche descrizione venga persa, sia corrotta, o non venga
+inviata dalla sorgente, sarà comunque possibile decodificare il file ed
+otterene un output sufficientemente corretto, tale da poter essere intepretato. \`E sufficiente la ricezione di una sola descrizione per la corretta ricostruzione del file sorgente. La ricezione di due o più descrizioni migliora l'accuratezza del file decodificato. Il file sorgente viene `\emph{descritto}' con più precisione.  Tale risultato viene raggiunto grazie alla creazione di codec che tengono in considerazione il fattore umano nell'interpretazione di vari tipi di informazioni:
 \begin{itemize}
  \item Nel caso del testo, una parola con una lettera mancante viene facilmente interpretata dal lettore. Il cervello umano sostituisce la lettera mancante con quella corretta basandosi sul senso della parola stessa o della frase.
  \item Nel caso delle immagini, la mancanza di pixel non rende l'immagine inutilizzabile. All'occhio umano saranno presenti delle lievi alterazioni, ma, anche questa volta, il contesto rende ugualmente interpretabile l'immagine e le informazioni che essa contiene.
 \end{itemize}
-Il funzionamento fin qu\`i illustrato della suddivisione del file in descrizioni si pu\`o applicare allo stesso modo per descrivere la suddivisione di ogni descrizione in descrittori. Come precentemente accennato, i descrittori sono la pi\`u piccola unit\`a di memorizzazione dei dati costituenti il file sorgente. Tale affermazione significa che, se viene perso un descrittore durante il trasferimento, oppure i suoi dati non sono corretti, esso può essere semplicemente non considerato. Ci\`o permette un'estrema flessibilit\`a di decodifica. Sostanzialmente, il decodificatore deve adattarsi alla tipologia e quantit\`a di dati collezionati e creare un file di output. Tale file sar\`a perfetto se non si sono verificate perdite, o ugualmente interpretabile in presenza di perdite.
+Il funzionamento illustrato si può applicare per descrivere la suddivisione di
+ogni descrizione in descrittori. Come accennato, i descrittori sono la più
+piccola unità di memorizzazione dei dati costituenti il file sorgente. Tale
+affermazione significa che, se viene perso un descrittore durante il
+trasferimento, oppure i suoi dati non sono corretti, esso può essere
+semplicemente non considerato. Ciò permette un'estrema flessibilità di
+decodifica. Sostanzialmente, il decodificatore deve adattarsi alla tipologia e
+quantità di dati collezionati e creare un file di output. Tale file sarà perfetto se non si sono verificate perdite, o ugualmente interpretabile in presenza di perdite.
