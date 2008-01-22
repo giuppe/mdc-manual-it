@@ -1,1 +1,10 @@
 \chapter{Implementazione}
+\label{cap:implementazione_codec}
+Il file sorgente pu\`o essere suddiviso in uno o pi\`u descrizioni, fino a un massimo di 64. Ogni descrizione, presa singolarmente, \`e in grado di descrivere l'intero file. \`E cio\`e sufficiente alla corretta decodifica del file. La codifica di un file in una singola descrizione fa s\`i che la sua corretta decodifica restituisca un file clone del file sorgente. Se, invece, il file sorgente viene codificato in pi\`u di una descrizione, allora sarà possibile la ricostruzione perfetta del file esclusivamente nel caso in cui tutti le descrizioni giungano a destinazione.
+MDSP versione 0.1 sostituisce un carattere \emph{spazio} se una lettera non giunge a destinazione (per i testi), oppure un pixel apportunamente scelto e poi interpolato per ogni pixel non giunto a destinazione (per le immagini). Oltre tali accorgimenti, è necessario prendere in considerazione l'eventualità che giunga a destinazione una singola descrizione con alcuni descrittori errati (caso peggiore). Tale eventualit\`a si risolve facendo s\`i che durante la codifica i descrittori, ma ancor pi\`u le descrizioni, contengano dati provenienti \emph{da tutte le zone del file}. Al fine del raggiungimento di tale scopo, vengono di seguito riportati gli indici necessari e semplici formule per poterli colcolare:
+\begin{itemize}
+ \item Dimensione di ogni descrizione: $$\frac{dimensione\_file}{numero\_descrizioni}$$
+ \item Numero di descrittori per ogni descrizione: $$\frac{dimensione\_descrizione}{dimensione\_descrittore}$$
+ \item Dimensione di ogni descrittore: $$\frac{dimensione\_descrizione}{numero\_descrittori}$$
+\end{itemize}
+Tali accorgimenti non sono da soli sufficienti per realizzare un codec pienamente compatibile con le specifiche MDC, altri accorgimenti verranno illustrati con maggiore dettaglio nel prossimo capitolo.
