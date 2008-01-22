@@ -1,51 +1,25 @@
 \chapter{Esempio codec testuale}
-\section{Codice}
-Viene di seguito riportato il codice di alcune funzioni che costituiscono il codec testuale utilizzato da MDSP. Successivamente verr\`a commentato ogni comando il cui funzionamento \`e strettamente legato alla codifica MDC:
-\subsection{Funzione code():}
+\section{Codifica}
+Qu\`i di seguito si procede alla descrizione dei principali comandi in linguaggio C++ che formano una funzione di codifica MDC compatibile.
 
-\begin{code}
-void TextMDCodec::code(AbstractStream* stream, MDStream* md\_stream) const \{\\
-	Uint32 stream\_size = stream->get\_data\_dim();\\
-	Uint32 flow\_dimension = (stream\_size/m\_flows\_number)+1;\\
-	Uint32 descriptors\_number = \\(Uint32)ceil(((double)flow\_dimension)/((double)m\_preferred\_payload\_size));\\
-	Uint16 max\_payload\_size = (flow\_dimension/descriptors\_number)+1;\\
-	md\_stream->init(stream->compute\_hash\_md5(), m\_flows\_number, descriptors\_number);\\
-	for (Uint8 i=0; i<m\_flows\_number; i++) \{\\
-		Uint64 offset = 0;\\
-		for (Uint32 j=0; j<descriptors\_number; j++) \{\\
-			if (stream\_size-(offset+i) > 0) \{\\
-				Descriptor* descriptor = new Descriptor();\\
-				descriptor->set\_stream\_id(md\_stream->get\_stream\_id());\\
-				descriptor->set\_flow\_id(i);\\
-				descriptor->set\_sequence\_number(j);\\
-				descriptor->set\_codec\_name(string("text"));\\
-				TextCodecParameters* tcp = new TextCodecParameters();\\
-				descriptor->set\_codec\_parameter(tcp);\\
-				MemDataChunk payload;\\
-				Uint64 k;\\
-				for (k=0; k<max\_payload\_size; k++)\\
-					if (offset+i+k+m\_flows\_number < stream\_size)\\
-						payload += \&stream->get\_data(offset+i+(k*m\_flows\_number), 1);\\
-				offset += m\_flows\_number*k;\\
-				descriptor->set\_payload(payload);\\
-				md\_stream->set\_descriptor(descriptor);\\
-			\}\\
-		\}\\
-	\}\\
-\}\\
-\end{code}
-La dicitura \textit{flow} \`e viene usata con il significato di ``\emph{Descrizioni}''. Tale variazione rispetto alla nomenclatura presente in letteratura \`e stata adottata al fine di evitare la possibile confusione dovuta alla somiglianza dei termini ``\emph{Descrizioni}'' e ``\emph{Descrittori}''. In seguito, quindi, la parola ``\emph{Flussi}'' è da intendersi con il significato di ``\emph{Descrizioni}''.
+\begin{notabene}
+La dicitura \textit{flow} \`e viene usata con il significato di ``\emph{Descrizioni}''. Tale variazione rispetto alla nomenclatura presente in letteratura \`e stata adottata al fine di evitare la possibile confusione dovuta alla somiglianza dei termini ``\emph{Descrizioni}'' e ``\emph{Descrittori}''. In seguito, quindi, la parola ``\emph{Flussi}'' \`e da intendersi con il significato di ``\emph{Descrizioni}''.
+\end{notabene}
+
 \begin{itemize}
  \item \begin{code}
 Uint32 flow\_dimension = (stream\_size/m\_flows\_number)+1;\\
 Uint32 descriptors\_number = \\(Uint32)ceil(((double)flow\_dimension)/((double)m\_preferred\_payload\_size));\\
 Uint16 max\_payload\_size = (flow\_dimension/descriptors\_number)+1;\\
 \end{code}
-Vengono calcolati i valori di dimensione e numero di flussi e descrittori. Il numero di descrittori da generare viene calcolato tenendo conto della \emph{dimensione preferita}, impostata dall'utente tramite linea di comando con il parametro \textit{--payload}; viene altres\`i utilizzata la dimensione predefinita nel caso non venga impostato alcun parametro. Si tratta di un parametro \emph{preferito} poich\`e il codec ha l'obiettivo di generare \emph{N} flussi sui quali devono essere distribuiti in modo possibilmente eguale i dati del file sorgente. \textit{max\_payload\_size} ha quindi il compito di bilanciare il carico tra i flussi.
+
+Innanzitutto \`e necessario calcolare dimensione e numero di flussi e descrittori. Il numero di descrittori da generare viene calcolato tenendo conto della \emph{dimensione preferita}, impostata dall'utente tramite linea di comando con il parametro \emph{--payload}; viene altres\`i utilizzata la dimensione predefinita nel caso non venga impostato alcun parametro. Si tratta di un parametro \emph{preferito} poich\`e il codec ha l'obiettivo di generare \emph{N} flussi sui quali devono essere distribuiti in modo possibilmente eguale i dati del file sorgente. Il parametro \textit{max\_payload\_size} ha quindi il compito di bilanciare il carico tra i flussi.
+
  \item \begin{code}
 md\_stream->init(stream->compute\_hash\_md5(), m\_flows\_number, descriptors\_number);\\
 \end{code}
-Inizializza un oggetto di tipo md\_stream (Multiple Description Stream) con un codice hash MD5 che viene calcolato a partire dal file sorgente su disco, il numero di flussi e di descrittori.
+Si inizializza un oggetto di tipo \textit{md\_stream} (Multiple Description Stream) con un codice hash MD5 che viene calcolato a partire dal file sorgente su disco, si specificano altres\`i il numero di flussi e di descrittori.
+
  \item \begin{code}
 Descriptor* descriptor = new Descriptor();\\
 descriptor->set\_stream\_id(md\_stream->get\_stream\_id());\\
@@ -53,137 +27,90 @@ descriptor->set\_flow\_id(i);\\
 descriptor->set\_sequence\_number(j);\\
 descriptor->set\_codec\_name(string("text"));\\
 \end{code}
-L'n-esimo descrittore viene inizializzato in memoria e viene impostato lo stream\_id copiandolo da quello generato dal file sorgente su disco. Successivamente viene inserito il numero di flusso e sequenza che lo contraddistingue tra tutti gli altri descrittori del file. Il numero di sequenza viene incrementato alla creazione di ogni nuovo descrittore ed è unico all'interno di un flusso. Con esso si pu\`o distinguere un descrittore all'interno di un flusso, la coppia (flow\_id, descriptor) individua un descrittore e lo distingue da tutti gli altri nell'ambito dell'intero file. Infine viene impostato il nome del codec che contrassegna ogni descrittore. Tale nome serve per riconoscere, in decodifica, il tipo di dati contenuti all'interno di un descrittore.
+L'n-esimo descrittore viene inizializzato in memoria e viene impostato il parametro \textit{stream\_id} copiandolo da quello generato dal file sorgente su disco. Successivamente viene inserito il numero di flusso e sequenza che lo contraddistingue tra tutti gli altri descrittori del file. Il numero di sequenza viene incrementato per ogni nuovo descrittore ed è unico all'interno di un flusso. Con esso si pu\`o distinguere un descrittore all'interno di un flusso, la coppia di parametri (\textit{flow\_id}, \textit{descriptor}) individua un descrittore e lo distingue da tutti gli altri nell'ambito dell'intero file. Infine viene impostato il nome del codec che contrassegna ogni descrittore. Tale nome ha lo scopo di identificare, in fase di decodifica, il tipo di dati contenuti all'interno di un descrittore.
+
  \item \begin{code}
 TextCodecParameters* tcp = new TextCodecParameters();\\
 descriptor->set\_codec\_parameter(tcp);\\
 \end{code}
-Viene inizializzato un oggetto di tipo TextCodecParameters che contiene i parametri del codec in questione. Poich\`e il testo semplice non possiede parametri significativi, tale oggetto viene inizializzato vuoto. Dopo la creazione, viene anch'esso associato al descrittore con il secondo comando in elenco.
+Viene inizializzato un oggetto \textit{tcp} di tipo TextCodecParameters che contiene i parametri del codec. Poich\`e il testo semplice non possiede parametri significativi, tale oggetto viene inizializzato vuoto. Dopo la creazione, viene anch'esso associato al descrittore.
+
  \item \begin{code}
 MemDataChunk payload;\\
 Uint64 k;\\
 for (k=0; k<max\_payload\_size; k++)\\
-if (offset+i+k+m\_flows\_number < stream\_size)\\
-payload += \&stream->get\_data(offset+i+(k*m\_flows\_number), 1);\\
+	if (offset+i+k+m\_flows\_number < stream\_size)\\
+		payload += \&stream->get\_data(offset+i+(k*m\_flows\_number), 1);\\
 offset += m\_flows\_number*k;\\
 descriptor->set\_payload(payload);\\
 \end{code}
-Finita la fase di preparazione del descrittore, si passa alla fase del riempimento di esso con i dati prelevati dal file sorgente su disco. Viene inizializzata in memoria una struttura dati che consente di caricare porzioni di file da disco. Con un ciclo vengono prelevati i caratteri dal file sorgente e inseriti nella struttura dati creata. L'offset e la formula che lo contiene consetono di rispettare i vincoli di codifica assolutamente necessari per rispettare le specifiche MDC, si tratta dei vincoli illustrati nella documentazione dei codec. Finita la preparazione del payload, quest'ultimo viene accodato al descrittore che adesso risulter\`a completo.
+Terminata la fase di preparazione del descrittore, si passa alla fase del riempimento con i dati prelevati dal file sorgente su disco. Viene inizializzata in memoria una struttura dati che consente di caricare porzioni di file da disco. Con un ciclo for vengono prelevati i caratteri dal file sorgente e inseriti nella struttura dati creata. l parametro \textit{offset} e la formula che lo contiene consetono di rispettare i vincoli di codifica, si tratta dei vincoli illustrati nel capitolo \ref{cap:descrizione_codec}. Finita la preparazione del payload, quest'ultimo viene accodato al descrittore che adesso risulter\`a completo.
+
  \item \begin{code}
 md\_stream->set\_descriptor(descriptor);\\
 \end{code}
 Infine, l'N-esimo descrittore viene accodato al Multiple Description Stream per poter successivamente essere inviato.
 \end{itemize}
+In appendice \`e riportato il codice completo della funzione di codifica testuale appena descritta.
 
-\subsection{Funzione decode():}
+\section{Decodifica:}
 
-\begin{code}
-void TextMDCodec::decode(const MDStream* md\_stream, AbstractStream* stream) const \{\\
-	if (md\_stream->is\_empty()) \\
-		return;\\
-	LOG\_INFO("Decoding...");\\
-	MemDataChunk* dc = new MemDataChunk();\\
-	vector<Uint8> taken\_stream;\\
-	Uint8 flows\_number = md\_stream->get\_flows\_number();\\
-	LOG\_INFO("Flows number: "<<flows\_number);\\
-	Uint32 sequences\_number = md\_stream->get\_sequences\_number();\\
-	LOG\_INFO("Sequences number: "<<sequences\_number);\\
-	Uint64 max\_dimension = 0;\\
-	for (Uint8 i=0; i<flows\_number; i++)\{
-		Uint64 offset = 0;\\
-		Uint16 payload\_size = 0;\\
-		for (Uint32 j=0; j<sequences\_number; j++)\{
-			Descriptor* descriptor = new Descriptor();\\
-			if(!(descriptor->get\_codec\_name()=="text"))\\
-			continue;\\
-			if (md\_stream->get\_descriptor(i, j, descriptor))\{
-				payload\_size = descriptor->get\_payload\_size();\\
-				if (md\_stream->is\_valid(descriptor->get\_flow\_id(), descriptor->get\_sequence\_number()))\{
-					(*dc) += (descriptor->get\_payload());\\
-					taken\_stream.resize(flows\_number*sequences\_number*(payload\_size+1));\\
-					Uint8 current\_received\_data;\\
-					Uint64 k;\\
-					for (k=0; k<payload\_size; k++) \{\\
-						dc->extract\_head(current\_received\_data);\\
-						if (current\_received\_data != 0) \{\\
-							Uint64 locate\_position = offset+i+(k*flows\_number);\\
-							taken\_stream[locate\_position] = current\_received\_data;\\
-							if (locate\_position > max\_dimension)\\
-								max\_dimension = locate\_position;\\
-						\}\\
-					\}\\
-					offset += flows\_number*k;\\
-				\}\\
-			\}\\
-			else\{\\
-				Uint64 k;\\
-				for (k=0; k<payload\_size; k++) \{\\
-					Uint64 locate\_position = offset+i+(k*flows\_number);\\
-					taken\_stream[locate\_position] = ' ';\\
-				\}\\
-				offset += flows\_number*k;\\
-			\}\\
-		\}\\
-	\}\\
-	MemDataChunk* taken\_dc = new MemDataChunk();\\
-	Uint8* temp\_container = new Uint8[max\_dimension+1];\\
-	for (Uint64 i=0; i<max\_dimension+1; i++)\\
-		temp\_container[i] = taken\_stream[i];\\
-	taken\_dc->append\_data(max\_dimension+1, temp\_container);\\
-	stream->set\_data(*taken\_dc);\\
-\}\\
-\end{code}
 \begin{itemize}
  \item \begin{code}
 Uint8 flows\_number = md\_stream->get\_flows\_number();\\
 Uint32 sequences\_number = md\_stream->get\_sequences\_number();\\
 \end{code}
-Dopo aver controllato che il Multiple Description Stream non sia vuoto, si creano due variabili contenenti il numero di flussi e sequenze dello stream (si ricordi che rispettivamente indicano il numero di descrizioni dello stream e di descrittori di ogni descrizione).
+Dopo aver controllato che il Multiple Description Stream non sia vuoto, si creano due variabili contenenti il numero di flussi e delle sequenze dello stream (si ricordi che rispettivamente indicano il numero di descrizioni dello stream e di descrittori di ogni descrizione).
+
  \item \begin{code}
 payload\_size = descriptor->get\_payload\_size();\\
 if (md\_stream->is\_valid(descriptor->get\_flow\_id(), descriptor->get\_sequence\_number()))\{
-(*dc) += (descriptor->get\_payload());\\
-taken\_stream.resize(flows\_number*sequences\_number*(payload\_size+1));\\
-Uint8 current\_received\_data;\\
-Uint64 k;\\
-for (k=0; k<payload\_size; k++) \{\\
-dc->extract\_head(current\_received\_data);\\
-if (current\_received\_data != 0) \{\\
-Uint64 locate\_position = offset+i+(k*flows\_number);\\
-taken\_stream[locate\_position] = current\_received\_data;\\
-if (locate\_position > max\_dimension)\\
-max\_dimension = locate\_position;\\
-\}\\
-\}\\
-offset += flows\_number*k;\\
+	(*dc) += (descriptor->get\_payload());\\
+	taken\_stream.resize(flows\_number*sequences\_number*(payload\_size+1));\\
+	Uint8 current\_received\_data;\\
+	Uint64 k;\\
+	for (k=0; k<payload\_size; k++) \{\\
+		dc->extract\_head(current\_received\_data);\\
+		if (current\_received\_data != 0) \{\\
+			Uint64 locate\_position = offset+i+(k*flows\_number);\\
+			taken\_stream[locate\_position] = current\_received\_data;\\
+			if (locate\_position > max\_dimension)\\
+			max\_dimension = locate\_position;\\
+		\}\\
+	\}\\
+	offset += flows\_number*k;\\
 \}\\
 \end{code}
-La porzione di codice che ci apprestiamo ad analizzare \`e di fondamentale importanza. Tutte le operazioni vengono effettuate sul descrittore correntemente selezionato, quindi si eviterà di ripeterlo. Innanzitutto viene memorizzata la dimensione del payload, tale dimensione pu\`o variare tra esclusivamente tra il penultimo e l'ultimo descrittore di un flusso.
+La porzione di codice che si sta per analizzare \`e di fondamentale importanza. Tutte le operazioni vengono effettuate sul descrittore correntemente selezionato, quindi si eviter\`a di ripeterlo. Innanzitutto viene memorizzata la dimensione del payload, tale dimensione \`e costante e pu\`o variare esclusivamente per l'ultimo descrittore di un flusso.
 \begin{notabene}
 Non ha senso effettuare paragoni tra descrittori appartenenti a flussi diversi, in quanto non sono in alcun modo correlati.
 \end{notabene}
-Se il descrittore corrente viene ritenuto valido all'interno del Multiple Description Stream si passa alla decodifica. Viene prelevato il payload e trasferito in una struttura dati in memoria (un Memory DataChunk). Il contenitore temporaneo dello stream decodificato viene ridimensionato per contenere (potenzialmente) tutti i payload provenienti da tutti i descrittori. \`E possibile raggiungere la dimensione massima esclusivamente nel caso in cui non vi sia alcun errore. A questo punto si comincia a prelevare le singole lettere dalla struttura dati in memoria. Se la lettera estratta ha un codice ascii diverso da ``\emph{0}'' si passa al calcolo della sua posizione assoluta all'interno dello stream finale (decodificato) e al posizionamento del carattere corrente in tale posizione. Infine viene aggiornato un contatore che tiene conto della massima posizione riempita in tale fase. Tale contatore servir\`a in una fase successiva e verr\`a descritto in seguito il suo significato.
+Se il descrittore corrente viene ritenuto valido all'interno del Multiple Description Stream si passa alla decodifica. Viene prelevato il payload e trasferito in una struttura dati in memoria (Memory DataChunk). Il contenitore temporaneo dello stream decodificato viene ridimensionato per contenere (potenzialmente) tutti i payload provenienti da tutti i descrittori. \`E possibile raggiungere la dimensione massima esclusivamente nel caso in cui non vi sia alcun errore di trasmissione. Successivamente si prelevano le singole lettere dalla struttura dati in memoria. Se la i-esima lettera estratta ha un codice ascii diverso da ``\emph{0}'' si passa al calcolo della sua posizione assoluta all'interno dello stream finale (decodificato) e al posizionamento del carattere corrente in tale posizione. Infine viene aggiornato un contatore che tiene conto della massima posizione raggiunta in tale fase. Tale contatore servir\`a successivamente, pertanto il suo significato verr\`a descritto in seguito.
+
  \item \begin{code}
 else\{\\
-Uint64 k;\\
-for (k=0; k<payload\_size; k++) \{\\
-Uint64 locate\_position = offset+i+(k*flows\_number);\\
-taken\_stream[locate\_position] = ' ';\\
-\}\\
-offset += flows\_number*k;\\
+	Uint64 k;\\
+	for (k=0; k<payload\_size; k++) \{\\
+		Uint64 locate\_position = offset+i+(k*flows\_number);\\
+		taken\_stream[locate\_position] = ' ';\\
+	\}\\
+	offset += flows\_number*k;\\
 \}\\
 \end{code}
-Nel caso in cui il descrittore corrente, per qualunque motivo, non sia valido vengono calcolate tutte le posizioni nello stream finale relative alle lettere contenute nel suo payload che sono state perse. Al loro posto vengono sostituiti dei caratteri spazio. Al di l\`a di tale variazione, l'algoritmo rimane del tutto simile a quanto visto sin'ora.
+Nel caso in cui il descrittore corrente, per qualunque motivo, non sia valido vengono calcolate tutte le posizioni nello stream finale relative alle lettere contenute nel suo payload che sono considerate perse. Al loro posto vengono sostituiti dei caratteri ``\emph{spazio}''. Esclusa quest'ultima variazione, l'algoritmo rimane del tutto simile a quanto visto sin'ora.
+
  \item \begin{code}
 MemDataChunk* taken\_dc = new MemDataChunk();\\
 Uint8* temp\_container = new Uint8[max\_dimension+1];\\
 for (Uint64 i=0; i<max\_dimension+1; i++)\\
-temp\_container[i] = taken\_stream[i];\\
+	temp\_container[i] = taken\_stream[i];\\
 taken\_dc->append\_data(max\_dimension+1, temp\_container);\\
 \end{code}
-Finita l'analisi di tutti i descrittori validi si deve rendere comprensibile (nonch\`e valido) i dati ricevuti. Si crea una lista di puntatori a locazioni da 8 bit (quindi caratteri) di dimensione pari all'estensione della porzione di stream decodificata correttamente. Se tutti i descrittori analizzati erano validi tale dimensione coincider\`a con quella dello stream inviato subito dopo la codifica. Se saranno presenti errori taledimensione sarà minore. Tale dimensione è di fondamentale importanza poich\`e segnerà il limite entro il quale ogni puntatore della lista ``punta'' ad un valore realmente utile della memoria e non ad un valore impredicibile. Si procede successivamente al travaso dei dati contenuti nello stream temporaneo nella lista di puntatori. L'ultima istruzione inserisce nell'apposita struttura dati in memoria il contenuto della lista di puntatori.
+Terminata l'analisi di tutti i descrittori validi si devono rendere comprensibili (oltre che validi) i dati ricevuti. Si crea una lista di puntatori a locazioni da 8 bit (quindi caratteri) di dimensione pari all'estensione della porzione di stream decodificata correttamente. Se tutti i descrittori analizzati si sono rivelati validi tale dimensione coincider\`a con quella dello stream inviato dalla sorgente. Se, invece, saranno presenti errori tale dimensione sar\`a minore di quella originale. La dimensione della porzione di stream valido \`e di fondamentale importanza poich\`e segner\`a il limite entro il quale ogni puntatore della lista ``punta'' ad un valore realmente utile della memoria e non ad un valore impredicibile. Si procede successivamente al travaso dei dati dallo stream temporaneo alla lista di puntatori. L'ultima istruzione inserisce nell'apposita struttura dati in memoria il contenuto della lista di puntatori.
+
  \item \begin{code}
 stream->set\_data(*taken\_dc);\\
 \end{code}
-Il comando finale riempie i dati dello stream con le lettere presenti nella struttura dati appena preparata.
+Il comando finale riempie lo stream con le lettere presenti nella struttura dati appena preparata.
 \end{itemize}
+In appendice \`e riportato il codice completo della funzione di codifica testuale appena descritta.
