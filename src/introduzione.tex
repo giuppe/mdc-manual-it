@@ -2,17 +2,31 @@
 
 \chapter{Introduzione}
 
-Multiresolution or layered system is good when network provides a way to treat
-differently some packet.
-
-MD coding can be applied to ad-hoc networks.
-
-Ad-hoc networks: large number of unreliable devices, packets can follow
-multiple paths but the single path can fail: md coding supports this scenario.
-
 \section*{Multiple Description Coding}
-Il \emph{Multiple Description Coding} è una tecnica di codifica che prevede la
-suddivisione di un flusso di dati generico (che può essere testo, immagini,
-audio o video) in più descrizioni (\emph{Descriptions}); ogni descrizione
+Il \emph{Multiple Description Coding} è una tecnica di meta-codifica che prevede
+la suddivisione di un flusso di dati generico (che può rappresentare testo,
+immagini, audio o video) in più descrizioni (\emph{Descriptions}); ogni descrizione
 è costruita in modo tale da permettere di ricostruire il flusso originale,
 sebbene con qualità inferiore.
+
+Una tecnica di meta-codifica differente e molto diffusa è quella \emph{layered}
+(``a strati''), che sta alla base di codec come mpeg. Questa tecnica prevede la
+suddivisione di un flusso di dati in uno ``strato base'' e molteplici ``strati
+di avanzamento'', che contengono minori informazioni. \`E necessario che lo
+``strato base'' abbia priorità massima, mentre la consegna degli altri strati
+può avvenire con bassa priorità. Questo tipo di approccio funziona molto bene
+quando la rete può utilizzare differenti ``priorità'' per il trasporto degli
+strati: per questo i codec \emph{layered} sono molto diffusi su reti
+``intelligenti'' (come DVB-*) e meno su Internet, dove il trasporto dei
+pacchetti avviene in modo \emph{best effort}.
+
+
+
+%Multiresolution or layered system is good when network provides a way to treat
+%differently some packet.
+
+%MD coding can be applied to ad-hoc networks.
+
+%Ad-hoc networks: large number of unreliable devices, packets can follow
+%multiple paths but the single path can fail: md coding supports this scenario.
+
