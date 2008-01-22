@@ -1,4 +1,118 @@
 \chapter{Progettazione}
+
+\section{Progettazione MDSP}
+\subsection{Messaggi}
+
+
+Le componenti del sistema che si trovano su elaboratori differenti comunicano tra loro per meggo di 'messaggi'. Tali messaggi rappresentano una particolare richiesta di servizi, oppure una corrispondente risposta.
+
+Un messaggio possiede una 'tipologia' e un certo numero di 'argomenti', dipendenti dal tipo di messaggio.
+
+Il tipico messaggio è composto da un header di 8 byte, cosi' suddivisi:
+
+
+
+\begin{itemize}
+\item 3 byte per la stringa MDC
+
+\item 1 byte per la versione del protocollo
+
+\item 4 byte per il tipo di messaggio
+\end{itemize}
+
+I messaggi possono avere un singolo parametro, oppure molti. Per 'parametro' qui ci si riferisce al parametro del messaggio, ovvero una stringa null-terminated, che a sua volta può contenere uno o più parametri a livello applicativo.
+
+
+
+
+
+
+\subsubsection{LIST}
+%
+LIST
+
+Composizione:
+
+\begin{itemize}
+\item header MDC
+\item null-terminated string
+\end{itemize}
+
+la stringa può contenere una espressione regolare per la definizione del nome del flusso ricercato
+
+
+\subsubsection{ALST}
+%
+Answer LiST
+
+Lista di parametri
+
+\subsubsection{SREQ}
+%
+Stream REQuest
+
+Singolo parametro
+
+\begin{itemize}
+\item hash dello stream
+\end{itemize}
+
+\subsubsection{ASRQ}
+%
+Answer Stream ReQuest
+
+Singolo parametro
+
+\subsubsection{SINF}
+%
+Stream INFormation
+
+Singolo parametro
+
+\subsubsection{ASNF}
+%
+Answer Stream iNFormation
+
+Singolo parametro
+
+\subsubsection{PARM}
+%
+PARaMeters
+
+\subsubsection{KALV}
+%
+Keep ALiVe
+
+Singolo parametro
+
+\subsubsection{PEER}
+%
+PEER
+
+Singolo parametro
+
+\subsubsection{APER}
+%
+Answer PEeR
+
+Lista di parametri
+
+\subsection{Descrittore}
+
+
+Un 'Descriptor' è, nell'ambito di questo sistema, una unità di dati di un flusso multimediale.
+
+Il flusso multimediale è suddiviso in sotto-flussi detti 'descrizioni', secondo le specifiche della codifica md; ogni descrizione è composta da un certo numero di descrittori, con la stessa relazione che c'è tra un filmato e un fotogramma.
+
+Il Descriptor contiene varie informazioni, come il flusso originario, il numero di descrizione, e la sequenza temporale. Il payload non è definito e pertanto è permessa una maggiore libertà in fase di definizione dei codec.
+
+
+
+
+
+
+
+\section{Codec}
 \label{cap:descrizione_codec}
 Il paradigma di protocollo di streaming a descrittori multipli rende
 necessaria la progettazione di codec su misura. Nel presente capitolo
