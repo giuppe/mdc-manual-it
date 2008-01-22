@@ -51,9 +51,9 @@ void TextMDCodec::decode(const MDStream* md\_stream, AbstractStream* stream) con
 	MemDataChunk* dc = new MemDataChunk();\\
 	vector<Uint8> taken\_stream;\\
 	Uint8 flows\_number = md\_stream->get\_flows\_number();\\
-	LOG\_INFO("Flows number: "<<flows\_number);\\
+	LOG\_INFO("Flows number: "$<<$flows\_number);\\
 	Uint32 sequences\_number = md\_stream->get\_sequences\_number();\\
-	LOG\_INFO("Sequences number: "<<sequences\_number);\\
+	LOG\_INFO("Sequences number: "$<<$sequences\_number);\\
 	Uint64 max\_dimension = 0;\\
 	for (Uint8 i=0; i<flows\_number; i++)\{
 		Uint64 offset = 0;\\

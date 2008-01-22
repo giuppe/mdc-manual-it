@@ -3,6 +3,11 @@
 \usepackage[italian]{babel}
 \usepackage{graphicx}
 \usepackage[margin=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage{float}
+\usepackage{subfigure}
+%\usepackage[left=2cm,right=1cm]{geometry}
 
 %opening
 \title{\begin{Huge}Multiple Description Streaming Protocol\end{Huge}\\Manuale Utente}
@@ -13,8 +18,42 @@
 \newenvironment{code}{\begin{quote}\vspace{0.5cm}\tt}{\vspace*{0.5cm}\end{quote}}   % Per i frammenti di codice.
 
 \begin{document}
+\frontmatter
+\maketitle
+
+\begin{figure}[b]
+\vspace*{150pt}
+{\small Eonio 2007,2008}
+\vspace*{13pt}
+
+{\small Scritto da Giuseppe D'Aqu\`i, Livio Pipitone}
+\vspace*{13pt}
+
+%{\small Editing a cura di Giuseppe D'Aqu\`i}
+%\vspace*{13pt}
+
+{\small Copertina di Andrea Delfino}
+\vspace*{13pt}
+
+{\footnotesize Ultimo aggiornamento: \today}
+\vspace*{13pt}
+
+\subfigure{\includegraphics[width=1.5cm]{../images/cc.png}}
+
+{\small Quest'opera \`e stata rilasciata sotto la licenza Creative Commons \textit{Attribuzione-Non commerciale-Condividi allo stesso modo 2.5 Italia}. Per leggere una copia della
+licenza visita il sito web http://creativecommons.org/licenses/by-nc-sa/2.5/it/ o spedisci una lettera a Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.}
+\end{figure}
+
+\tableofcontents
+
 \include{introduzione}
+\mainmatter
+\include{requisiti}
+\include{progettazione}
+\include{implementazione}
 \include{manuale}
 \include{esempio}
+\appendix
 \include{appendice}
+
 \end{document}
