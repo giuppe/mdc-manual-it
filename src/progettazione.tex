@@ -151,9 +151,15 @@ otterene un output sufficientemente corretto, tale da poter essere intepretato. 
 	\label{fig:codifica}
 \end{figure}
 
-Il funzionamento (illustrato in figura \ref{fig:codifica}) si può applicare per
-descrivere la suddivisione di ogni descrizione in descrittori. Come accennato, i descrittori sono la più
-piccola unità di memorizzazione dei dati costituenti il file sorgente. Tale
+\begin{figure}[ht]
+\centering \includegraphics[width=0.90\textwidth]{../images/decodifica.png}
+	\caption{Diagramma di flusso dell'algoritmo di decodifica.}
+	\label{fig:decodifica}
+\end{figure}
+
+Il funzionamento del codec (illustrato in figura \ref{fig:codifica} e
+\ref{fig:decodifica}) si può applicare per descrivere la suddivisione di ogni
+descrizione in descrittori. Come accennato, i descrittori sono la più piccola unità di memorizzazione dei dati costituenti il file sorgente. Tale
 affermazione significa che, se viene perso un descrittore durante il
 trasferimento, oppure i suoi dati non sono corretti, esso può essere
 semplicemente non considerato. Ciò permette un'estrema flessibilità di
