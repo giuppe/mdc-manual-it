@@ -144,8 +144,15 @@ otterene un output sufficientemente corretto, tale da poter essere intepretato. 
  \item Nel caso del testo, una parola con una lettera mancante viene facilmente interpretata dal lettore. Il cervello umano sostituisce la lettera mancante con quella corretta basandosi sul senso della parola stessa o della frase.
  \item Nel caso delle immagini, la mancanza di pixel non rende l'immagine inutilizzabile. All'occhio umano saranno presenti delle lievi alterazioni, ma, anche questa volta, il contesto rende ugualmente interpretabile l'immagine e le informazioni che essa contiene.
 \end{itemize}
-Il funzionamento illustrato si può applicare per descrivere la suddivisione di
-ogni descrizione in descrittori. Come accennato, i descrittori sono la più
+
+\begin{figure}[ht]
+\centering \includegraphics[width=0.90\textwidth]{../images/codifica.png}
+	\caption{Diagramma di flusso dell'algoritmo di codifica.}
+	\label{fig:codifica}
+\end{figure}
+
+Il funzionamento (illustrato in figura \ref{fig:codifica}) si può applicare per
+descrivere la suddivisione di ogni descrizione in descrittori. Come accennato, i descrittori sono la più
 piccola unità di memorizzazione dei dati costituenti il file sorgente. Tale
 affermazione significa che, se viene perso un descrittore durante il
 trasferimento, oppure i suoi dati non sono corretti, esso può essere
