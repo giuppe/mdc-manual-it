@@ -7,6 +7,67 @@ corrente, ma potrebbero avere sviluppi futuri interessanti.
 \section{Web cooperativo}
 
 \section{Codec video}
+Durante la realizzazione del codec testuale e del codec grafico, si è presa in
+considerazione la possibile realizzazione futura di un codec video.
+
+\subsection{Problematiche}
+
+In seguito agli studi fatti è emersa la necessità che il codec video possieda
+alcune peculiarità differenti dalla attuale tecnologia ed approccio di codifica, in
+particolare, ci si riferisce alle seguenti considerazioni:
+
+\begin{enumerate}
+\item Lo stream video codificato deve conterene informazioni di tipo
+esclusivamente 'visuale'. Non deve, cioé, contenere informazioni audio e video
+contemporaneamente.
+
+\item La codifica video basata su GOP (Group of Pictures) o GOF (Group of
+Frames) è affetta da probabile tramissione di errori, i quali deteriorano il
+file di output nell'istante in cui vengono ricevuti e per un certo lasso di
+tempo. Tale problema è evidente nella codifica video 'layered'. Un codec video
+MDC compatibile deve invece manifestare una perdita di qualità visiva
+esclusivamente nell'istante in cui vegono perse informazioni.
+
+\item La codifica layered prevede la presenza di un flusso principale e di
+alcuni sottoflussi sparsi all'interno di un singolo GOP o sparsi tra più GOP.
+La realizzazione di un codec video MDC compatibile, invece, sovverte tale
+approccio codificando il file sorgente in uno o più descrizioni tutte egualmente
+(e separatamente) decodificabili.
+\end{enumerate}
+
+\subsection{Soluzioni}
+
+Le problematiche appena descritte nascono da analisi effettuate relative alla
+possibile applicazione della codifica \emph{MDC based} su file video già
+codificati con algoritmi 'layered'. Le possibili soluzioni sono le seguenti:
+
+\begin{itemize}
+  \item Realizzazione di un codec \emph{MDC puro}: ossia un codec per la cui
+  realizzazione è richiesta la conversione del file codificato in un file RAW e
+  la sua successiva codifica secondo gli standard MDC.
+  \item Realizzazione di un codec \emph{ibrido}: ossia un codec che riesca a
+  'spacchettare' la codifica layered, estragga i dati utili e li utilizzi per
+  creare descrizioni virtualmente indipendenti.
+\end{itemize}
+
+La prima di tali soluzioni rispetta pienamente le spacifiche MDC in quanto
+permette di manipolare più facilmente i dati del file sorgente per creare
+descrizioni multiple. Non è però facilmente applicabile a causa della
+disponibilità estremamente esigua di documentazione in letteratura a riguardo. Richiede
+altresì la realizzazione di \emph{regole di trasformazione} tra i dati RAW e le
+descrizioni corrispondenti, si dovrebbe realizzare inoltre un sistema di
+compressione di tali dati.
+\\\\
+La soluzione basata su codec \emph{ibrido} comporta una notevole complessità
+relativa alla fase di decodifica del video: spacchettizzazione dei GOP,
+esclusione dell'audio e compensazione degli errori. Sarebbe necessaria una
+ulteriore analisi sulla previsione interframe e interGOP utilizzata dai codec
+layered: è necessario annullare tali informazioni poiché ogni descrizione
+contiene solo alcune porzioni dei dati su cui tali statistiche sono state calcolate.
+Sarebbe inevitabile, inoltre, la creazione di ulteriore ridondanza relativa
+alla presenza del layer base in tutte le descrizioni MDC, oltre le informazioni
+di arricchimento. \`E però indiscutibile l'eventuale enorme diffusione che avrebbe
+tale codec in quanto permetterebbe l'immediata impiegabilità con la quasi totalità dei file video oggi esistenti.
 
 \section{Codec audio}
 
