@@ -105,28 +105,43 @@ immagini che possiedono una maschera di colori esclusivamente a 24 bit e di
 file in formato BMP non compresso. Eventuali versioni future di MDSP potrebbero
 supportare immagini di formato diverso e con diverse profondità di colore.
 \\\\
-Di seguito vengono brevemente illustrate due immagini, l'immagine
+Di seguito vengono brevemente illustrate quattro immagini, l'immagine
 \ref{fig:sorgente} è il file sorgente e viene codificato in 4 descrizioni,
-mentre l'immagine \ref{fig:decodificata} è il file decodificato.
+mentre l'immagine \ref{fig:interpolata} è il file di output.
 
 \begin{figure}[ht]
-\centering \includegraphics[width=0.65\textwidth]{../images/lena1.png}
+\centering \includegraphics[width=0.40\textwidth]{../images/lena1.png}
 	\caption{Immagine sorgente.}
 	\label{fig:sorgente}
 \end{figure}
 
 \begin{figure}[ht]
-\centering \includegraphics[width=0.65\textwidth]{../images/lena2.png}
-	\caption{Immagine decodificata.}
-	\label{fig:decodificata}
+\centering \includegraphics[width=0.40\textwidth]{../images/lena2.png}
+	\caption{Immagine ricevuta.}
+	\label{fig:ricevuta}
 \end{figure}
 
-Le immagini \ref{fig:sorgente} e \ref{fig:decodificata} permettono
-l'immediata visione del funzionamento del codec nel suo complesso. Differentemente dal testo, l'immagine \ref{fig:sorgente} è stata
-codificata e inviata al destinatario, successivamente è stata decodificata. La
-perdita di descrittori (non descrizioni) è casuale e dovuta alla congestione o
-inefficienza della rete. Tutte le descrizioni sono state correttamente
-decodificate. Si può notare che l'immagine \ref{fig:decodificata} presenta delle
-imperfezioni dovute esclusivamente alla perdita dei pixel associati ai descrittori persi
-durante il trasferimento. In tali zone dell'immagine è stato eseguito
-l'algoritmo di interpolazione.
+\begin{figure}[ht]
+\centering \includegraphics[width=0.65\textwidth]{../images/lena3.png}
+	\caption{Evidenzioazione dei pixel non correttamente ricevuti.}
+	\label{fig:evidenza}
+\end{figure}
+
+\begin{figure}[ht]
+\centering \includegraphics[width=0.65\textwidth]{../images/lena4.png}
+	\caption{Immagine con i pixel mancanti interpolati.}
+	\label{fig:interpolata}
+\end{figure}
+
+La figura \ref{fig:evidenza} mostra la totalità di pixel correttamente
+ricevuti. In verde è possibile notare i pixel mancanti.
+In figura \ref{fig:ricevuta} è mostrata l'immagine ricevuta.
+Le immagini \ref{fig:sorgente}, \ref{fig:ricevuta}, \ref{fig:evidenza} e
+\ref{fig:interpolata} permettono l'immediata visione del funzionamento del codec
+nel suo complesso. Differentemente dal testo, l'immagine \ref{fig:sorgente} è stata codificata e inviata al destinatario, successivamente è stata decodificata. La
+perdita di descrittori è casuale e dovuta alla congestione o
+inefficienza della rete. Tutte le 4 descrizioni in cui è stata codificata
+l'immagine sorgente sono state correttamente decodificate.
+Si può notare che la figura \ref{fig:interpolata} presenta delle imperfezioni
+dovute esclusivamente alla perdita dei pixel associati ai descrittori persi (17 su 195) durante il trasferimento. In tali zone
+dell'immagine è stato eseguito l'algoritmo di interpolazione. 
