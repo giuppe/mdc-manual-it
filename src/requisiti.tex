@@ -14,16 +14,46 @@ flussi di dati in modo \emph{peer-to-peer} (chiamato MDSP)
 \section{Codifica}
 
 
-Un codec è un dispositivo (hardware o software) in grado di codificare e
+Un \emph{codec} è un dispositivo (hardware o software) in grado di codificare e
 decodificare alcune informazioni in un formato di rappresentazione particolare.
 In genere il termine è usato in relazione a flussi multimediali (audio/video)
 processati tramite un elaboratore elettronico.
-
+Esistono molti modelli per la realizzazione di codec: u
 
 
 \subsection{Modello \emph{Layered}}
+Il Modello \emph{Layered} prevede che i codec debbano suddividere un flusso
+multimediale in:
+\begin{itemize}
+  \item uno ``strato base'' (\emph{Base Layer})
+  \item diversi ``strati di avanzamento'' (\emph{Enhancement Layers}) 
+\end{itemize}
 
-TODO: inserire immagine sul modello layered
+Il principio è che gli \emph{Enhancement Layers}, essendo non necessari, possano
+essere inviati solo a chi ne fa specifica richiesta, per aumentare la
+qualità del flusso.
+
+Questo tipo di approccio, anche se molto diffuso\footnote{Il Modello
+\emph{Layered} è alla base di codec come MPEG e derivati (MP3, DivX, ecc.)},
+presenta alcune problematiche.
+
+I flussi multimediali generalmente vengono trasmessi tramite reti che non
+garantiscono il trasporto privo di errori (\emph{best effort}). Ogni pacchetto
+inviato ha una certa probabilità di giungere a destinazione corrotto, oppure di
+non arrivare affatto. Nel Modello \emph{Layered} questi errori potrebbero
+intaccare in pacchetto di un \emph{Enhancement Layer} oppure di un \emph{Base
+Layer}: nel primo caso si avrà solo una piccola perdita di qualità, mentre nel
+secondo caso si avranno conseguenze potenzialmente disastrose, come la perdita
+di continuità nel flusso. Se il flusso non è real-time, è possibile chiedere
+nuovamente alla sorgente il frammento danneggiato: un \emph{Base Layer} però
+contiene solitamente molte più informazioni, quindi è più oneroso
+ritrasmetterlo.
+Infine, gli \emph{Enhanchement Layers} hanno un senso solo se rapportati al
+loro strato base, quindi è necessario far si che giungano in istanti di
+tempo vicini: altrimenti sarebbero inutili.
+
+
+%TODO: inserire immagine sul modello layered
 
 \subsection{Modello \emph{Multiple Descriptions}}
 
@@ -98,7 +128,6 @@ meta-codifica a descrittori multipli.
 \end{figure}
 
 \subsection{Casi d'uso}
-
 
 Chiameremo Alice un generico nodo della rete che vuole effettuare le azioni, e
 Bob il peer a cui queste comunicazioni sono dirette.
