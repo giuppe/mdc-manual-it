@@ -109,7 +109,10 @@ Differentemente dal testo, l'immagine sorgente è stata codificata e
 inviata al destinatario, successivamente è stata decodificata. La perdita di descrittori è casuale e dovuta alla congestione o inefficienza della rete. Tutte le 4 descrizioni in cui è stata codificata
 l'immagine sorgente sono state correttamente decodificate. Di seguito vengono
 brevemente illustrate quattro immagini che permettono l'immediata visione del funzionamento del codec nel suo complesso, l'immagine in alto a sinistra è il file sorgente e viene
-codificato in 4 descrizioni, mentre l'immagine in basso a destra è il file di output.
+codificato in 4 descrizioni, mentre l'immagine in basso a destra è il file di
+output. Le immagini seguenti sono relative alla richiesta, da parte di un peer,
+della trasmissione del file sorgente a massima risoluzione, ossia all'invio di
+tutte le descrizioni disponibili.
 
 \begin{figure}[ht]
 \includegraphics[width=0.50\textwidth]{../images/lena1.png}
@@ -125,4 +128,26 @@ La figura in alto a destra mostra la totalità di pixel correttamente
 ricevuti. Nella figura in basso a sinistra, in verde, è possibile notare i pixel
 mancanti. Si può notare che la figura finale (in basso a destra) presenta delle
 leggerissime imperfezioni (praticamente invisibili) dovute esclusivamente alla
-perdita dei pixel associati ai descrittori persi (17 su 195) durante il trasferimento. In tali zone dell'immagine è stato eseguito l'algoritmo di interpolazione. 
+perdita dei pixel associati ai descrittori persi (17 su 195) durante il trasferimento. In tali zone dell'immagine è stato eseguito l'algoritmo di interpolazione.
+\\\\
+Di seguito viene, invece, mostrato il funzionamento del codec grafico
+nel caso in cui viene richiesta la trasmissione a bassa qualità. In figura
+\ref{fig:occhi} è illustrato in dettaglio il funzionamento dell'algoritmo di interpolazione. I pixel non correttamente
+ricevuti vengono sostituiti con pixel predetti in base alle componenti di
+colore dei pixel vicini. L'opacità accentuata di alcuni pixel è dovuta alla
+quantità non sufficiente di pixel validi su cui effettuare la previsione.
+
+\begin{figure}[ht]
+\includegraphics[width=0.90\textwidth]{../images/occhi.png}
+\centering \caption{Particolare dettaglio sul risultato dell'interpolazione.}
+	\label{fig:occhi}
+\end{figure}
+Come è possibile notare, la trasmissione dati presa in esame ha prodotto una
+quantità molto esigua di pixel validi (caso peggiore), tuttavia è ancora
+possibile scorgere l'immagine originale ed il suo contenuto visivo. L'immagine sorgente possiede
+una larghezza di 512 pixel, tale dimensione (multipla del numero di flussi
+trascurati durante il trasferimento) fa sì che i pixel mancanti si dispongano
+secondo linee verticali. \`E possibile però apprezzare la robustezza del
+sistema di trasmissione e di codifica/decodifica di MDSP che mantiene il contenuto informativo di un file
+grafico nonostante la quantità di informazioni richiesta per la sua descrizione
+sia fortemente insufficiente ed in parte errata.
