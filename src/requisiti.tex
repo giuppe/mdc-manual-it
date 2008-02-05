@@ -88,17 +88,19 @@ frammento 'base', più importante degli altri, e diversi frammenti più piccoli 
 \subsection{Organizzazione}
 
 
-Il testbed è composto da un insieme di classi, suddivise in directory:
+Il testbed è composto da un insieme di classi, suddivise per tipologia:
 
 
 
 \begin{itemize}
-\item 'common': classi che facilitano la realizzazione delle proprie applicazioni; comprendono utility per accedere alla rete, per simulare un comportamento multi-tasking, e altro.
+\item \emph{common}: classi che facilitano la realizzazione delle proprie
+applicazioni; comprendono utility per accedere alla rete, per simulare un comportamento multi-tasking, e altro.
 
-\item 'codecs': contiene sia classi astratte, da usare come base per i codec
-reali, sia classi di utilità, come il registro dei codec, utilizzato per auto-caricare il codec adatto a seconda del flusso informativo
+\item \emph{codecs}: contiene sia classi astratte, da usare come base per i
+codec reali, sia classi di utilità, come il registro dei codec, utilizzato per auto-caricare il codec adatto a seconda del flusso informativo
 
-\item 'messages': l'iniseme dei messagi di base
+\item \emph{messages}: l'insieme dei messagi di base
+\item \emph{app}: una applicazione client-server di esempio
 \end{itemize}
 
 
@@ -121,92 +123,31 @@ MDSP sta per Multiple Description Stream Protocol, ed è un protocollo per lo
 scambio di stream di vario tipo (contenuti multimediali) organizzati secondo una
 meta-codifica a descrittori multipli.
 
-\begin{figure}[b]
+\begin{figure}[hb]
 \includegraphics[width=0.90\textwidth]{../images/network_mdc.png}
 \label{fig:network_mdc}
 \caption{Modello di rete basata su MDC}
 \end{figure}
 
-\subsection{Casi d'uso}
-
-Chiameremo Alice un generico nodo della rete che vuole effettuare le azioni, e
-Bob il peer a cui queste comunicazioni sono dirette.
-
-Ci sono poi anche altri amici, come Carlina, David ed Emy, che condividono le
-stesse passioni di Alice e Bob.
-
-
-\subsubsection{Richiesta di un flusso multimediale}
-%
-
-Alice ha bisogno di un flusso multimediale, e sa già che Bob ce l'ha, tutto o in
-parte (lo sa perché ha già visto la lista dei flussi di Bob).
-
-Quindi Alice invia un messaggio SREQ, specificando come parametro l'hash univoco
-del flusso, il numero della descrizione, e una sequenza di descrittori.
-
-Bob quindi invierà un messaggio ASRQ, specificando come parametro il timeout di
-keep-alive; Bob, infatti, continuerà ad inviare il flusso di dati finché riceverà
-pacchetti di KALV (keep-alive) da Alice, supponendola disconnessa allo scadere
-del timeout.
-
-
-
-
-
-
-\subsubsection{Richiesta della lista dei flussi}
-%
-
+Tale protocollo è concepito per avere le seguenti caratteristiche:
 \begin{itemize}
-\item Alice ha bisogno della lista dei flussi disponibili da Bob. Invia un messaggio LIST, non parametro vuoto, e riceve da Bob un messaggio ALST (Answer LiST) contenente un vettore con tutti i nomi e gli hash dei flussi che egli possiede;
-\item Alice sta cercando un particolare flusso, di cui sa parte del nome
-('pippo'); invia un messaggio LIST a Bob con parametro '*pippo*', e Bob
-risponderà con un ALST contenente informazioni su tutti i file che contengono la
-parola 'pippo' nel nome.
+  \item ogni messaggio è indipendente dagli altri
+  \item nessuna ritrasmissione dei messaggi errati o mancanti
+  \item nessun tipo di controllo di errore
+  \item nessun tipo di controllo di flusso 
 \end{itemize}
 
+Le ultime tre caratteristiche, se necessarie, possono essere gestite a livelli
+più alti dello stack protocollare.
 
 
 
-\subsubsection{Richiesta di informazioni su un flusso}
-%
-
-Alice sa che un determinato flusso (di cui possiede l'hash) è posseduto da Bob;
-invia quindi un messaggio SINF (Stream INFormation), per avere informazioni
-specifiche del flusso, ad esempio la durata, la qualità di codifica, ecc. Bob
-invia un messaggio ASNF contenente la risposta.
-
-
-
-
-
-
-\subsubsection{Invio di parametri di rete}
-%
-
-Alice deve informare Bob di cambiamenti che stanno avvenendo dalla sua parte; per
-esempio, sta cambiando rete e non vuole interrompere lo streaming; oppure c'è
-stato un problema con il router ed è necessario abbassare la velocità di invio
-del flusso. In tutti questi casi, Alice invia un messaggio PARM a Bob,
-specificando i nuovi parametri.
-
-
-
-
-
-
-\subsubsection{Richiesta di altri peer con lo stesso flusso}
-%
-
-Alice sta scaricando un flusso da Bob, ma avverte la necessità di frequentare
-altre persone, che magari condividono lo stesso flusso; invia quindi un messaggio
-PEER a Bob, seguito dall'hash univoco del flusso. Bob raccoglie le idee su tutti
-gli amici che conosce, o che ha conosciuto tramite lo scaricamento del flusso in
-oggetto, per esempio Carlina, da cui Bob ha scaricato originariamente il flusso,
-David, che ha scaricato il flusso tempo fa, ed Emy che lo sta scaricando ora. Bob
-quindi prepara un messaggio APER contenente l'indirizzo ip e la porta di Carlina,
-David ed Emy e lo invia ad Alice.
+\subsection{Canali}
+Devono essere previsti ``canali'' per il trasporto di due tipi di informazioni:
+\begin{itemize}
+  \item \emph{messaggi di controllo}: per la gestione della rete
+  \item \emph{dati}: i contenuti scambiati dagli utenti
+\end{itemize}
 
 
 
