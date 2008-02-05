@@ -2,13 +2,15 @@
 
 \section{Obiettivi del sistema}
 
+I principali obiettivi sono:
 
 \begin{itemize}
 \item progettazione e implementazione dei vari codec in un formato mdc-compatibile
 \item progettazione e implementazione di un protocollo per lo scambio dei
 flussi di dati in modo \emph{peer-to-peer} (chiamato MDSP)
-\item piattaforma per il test dell'insieme
+\item piattaforma per il test del sistema
 \end{itemize}
+
 
 
 \section{Codifica}
@@ -78,6 +80,42 @@ frammento 'base', più importante degli altri, e diversi frammenti più piccoli 
 
 
 
+\section{MDSP}
+
+
+MDSP sta per Multiple Description Stream Protocol, ed è un protocollo per lo
+scambio di stream di vario tipo (contenuti multimediali) organizzati secondo una
+meta-codifica a descrittori multipli.
+
+\begin{figure}[hb]
+\includegraphics[width=0.90\textwidth]{../images/network_mdc.png}
+\label{fig:network_mdc}
+\caption{Modello di rete basata su MDC}
+\end{figure}
+
+Tale protocollo è concepito per avere le seguenti caratteristiche:
+\begin{itemize}
+  \item ogni messaggio è indipendente dagli altri
+  \item nessuna ritrasmissione dei messaggi errati o mancanti
+  \item nessun tipo di controllo di errore
+  \item nessun tipo di controllo di flusso 
+\end{itemize}
+
+Le ultime tre caratteristiche, se necessarie, possono essere gestite a livelli
+più alti dello stack protocollare.
+
+
+
+\subsection{Canali}
+Devono essere previsti ``canali'' per il trasporto di due tipi di informazioni:
+\begin{itemize}
+  \item \emph{messaggi di controllo}: per la gestione della rete
+  \item \emph{dati}: i contenuti scambiati dagli utenti
+\end{itemize}
+
+
+
+
 
 
 
@@ -113,42 +151,6 @@ Il testbed è stato sviluppato in C/C++, anche se, seguendo le specifiche, è
 possibile implementare una qualunque parte del sistema con qualsiasi linguaggio.
 
 \`E stato sviluppato un client in python.
-
-
-
-\section{MDSP}
-
-
-MDSP sta per Multiple Description Stream Protocol, ed è un protocollo per lo
-scambio di stream di vario tipo (contenuti multimediali) organizzati secondo una
-meta-codifica a descrittori multipli.
-
-\begin{figure}[hb]
-\includegraphics[width=0.90\textwidth]{../images/network_mdc.png}
-\label{fig:network_mdc}
-\caption{Modello di rete basata su MDC}
-\end{figure}
-
-Tale protocollo è concepito per avere le seguenti caratteristiche:
-\begin{itemize}
-  \item ogni messaggio è indipendente dagli altri
-  \item nessuna ritrasmissione dei messaggi errati o mancanti
-  \item nessun tipo di controllo di errore
-  \item nessun tipo di controllo di flusso 
-\end{itemize}
-
-Le ultime tre caratteristiche, se necessarie, possono essere gestite a livelli
-più alti dello stack protocollare.
-
-
-
-\subsection{Canali}
-Devono essere previsti ``canali'' per il trasporto di due tipi di informazioni:
-\begin{itemize}
-  \item \emph{messaggi di controllo}: per la gestione della rete
-  \item \emph{dati}: i contenuti scambiati dagli utenti
-\end{itemize}
-
 
 
 
