@@ -1,1 +1,21 @@
 \chapter{Manuale}
+Nel presente capitolo verranno illustrati i principali comandi per la
+transcodifica e la gestione del protocollo MDSP.
+
+\section{Comandi principali}
+I principali comandi riguardanti l'applicazione MDSP versione 0.1 sono relativi
+alle operazioni di codifica, decodifica e avvio in modalità server e client. I
+comandi relativi alla codifica e alla decodifica di seguito riportati sono
+relativi all'uso di un file testuale. L'esempio è comunque valido nel caso si
+vogliano utilizzare file contenenti immagini.
+
+\begin{itemize}
+  \item Codifica: \begin{code} mdc --input text\_file.txt --code --codec text
+  --output text\_file.mdc \end{code}
+  \item Decodifica: \begin{code} mdc --input text\_file.mdc --decode --codec
+  text --output new\_text\_file.txt \end{code}
+  \item Modalità server: \begin{code} mdc --daemon \end{code}
+  \item Modalità client: \begin{code} mdc \end{code}
+\end{itemize}
+
+
