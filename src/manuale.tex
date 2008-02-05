@@ -10,12 +10,69 @@ relativi all'uso di un file testuale. L'esempio è comunque valido nel caso si
 vogliano utilizzare file contenenti immagini.
 
 \begin{itemize}
-  \item Codifica: \begin{code} mdc --input text\_file.txt --code --codec text
-  --output text\_file.mdc \end{code}
-  \item Decodifica: \begin{code} mdc --input text\_file.mdc --decode --codec
-  text --output new\_text\_file.txt \end{code}
-  \item Modalità server: \begin{code} mdc --daemon \end{code}
-  \item Modalità client: \begin{code} mdc \end{code}
+  \item Codifica: \texttt{mdc --input text\_file.txt --code --codec text
+  --output text\_file.mdc}\\ Per la codifica è strettamente necessario
+  specificare il file sorgente (\emph{input}), il file di output, l'operazione desiderata (\emph{code}) e il
+tipo di codec da utilizzare (\emph{text}). Nel paragrafo \ref{sec:opzioni} vengono riportate tutte le opzioni disponibili. 
+  \item Decodifica: \texttt{mdc --input text\_file.mdc --decode --codec
+  text\\ --output new\_text\_file.txt}\\ Per la decodifica è strettamente
+  necessario specificare il file sorgente (\emph{input}), il file di output, l'operazione desiderata (\emph{decode}) e il
+tipo di codec da utilizzare (\emph{text}). Nel paragrafo \ref{sec:opzioni} vengono riportate tutte le opzioni disponibili.
+  \item Modalità server: \texttt{mdc --daemon}\\ Lanciando da linea di comando
+  MDSP versione 0.1 in modalità server, l'applicazione viene configurata come `erogatore di file' e si pone in ascolto
+sulle porte UDP 5551 per i segnali di controllo e 5552 per lo scambio dai dati.
+  \item Modalità client: \texttt{mdc}
 \end{itemize}
 
+Nel capitolo \ref{cap:protocollo} viene illustrato nel dettaglio il
+funzionamento e la configurazione della modalità di esecuzione `server'.
 
+\section{Opzioni}
+\label{sec:opzioni}
+Di seguito vengono elencate e descritte tutte le opzioni dell'applicazione:
+
+\begin{itemize}
+  \item \texttt{--input}: (\emph{parametro obbligatorio}) è il
+  nome del file sorgente, il nome comprende anche l'eventuale path completo;
+  \item \texttt{--output}: (\emph{parametro obbligatorio}) è il
+  nome del file di destinazione (il file decodificato), il nome comprende anche l'eventuale path
+  completo.
+  \item \texttt{--code}: (\emph{parametro obbligatorio}) indica
+  l'operazione da effettuare, in questo caso codifica del file sorgente nel suo equivalente
+  '.mdc'.
+  \item \texttt{--input}: (\emph{parametro obbligatorio}) indica
+  l'operazione da effettuare, in questo caso decodifica del file '.mdc' nel formato del file di
+  output.
+  \item \texttt{--codec}: (\emph{parametro obbligatorio}) specifica il tipo di
+  codec da utilizzare. MDSP versione 0.1 può utilizzare un codec testuale (\emph{text})
+  e un codec grafico (\emph{image}).
+  \item \texttt{--flows}: specifica il numero di descrizioni in cui verrà
+  codificato il file corgente. Tale opzione è utilizzabile esclusivamente insieme all'opzione
+  \emph{--code}, altrimenti verrà ignorata. \`E possibile specificare un numero
+  intero di descrizioni compreso tra 1 e 64, se tale opzione non viene
+  specificata MDSP procederà alla codifica del file sorgente utilizzando 2
+  descrizioni.
+  \item \texttt{--payload}: specifica una preferenza sulla quantità di dati che
+  si desidera vengano trasportati in ogni descrittore. MDSP può modificare tale
+  valore allorquando l'utente specifichi un valore non compatibile con le
+  specifiche. Tale opzione è utilizzabile esclusivamente insieme all'opzione
+  \emph{--code}, altrimenti verrà ignorata. Se si utilizza il codec testuale
+  tale valore può essere impostato in un intervallo compreso tra 25 e 55000
+  (l'unità di misura è il carattere). In caso venga utilizzato il codec grafico
+  l'intervallo ammesso è compreso tra 10 e 18330 (l'unità di misura è il
+  pixel). Se tale opzione non viene
+  specificata MDSP procederà alla codifica del file sorgente impostando il
+  parametro al valore 1000 indipendentemente dal codec utilizzato.
+  \item \texttt{--daemon}: avvia MDSP in modalità server.
+  \item \texttt{--help}: visualizza una breve descrizione delle modalità
+  operative e dei parametri ammessi.
+\end{itemize}
+
+Esempi di utilizzo:
+
+\begin{code}
+mdc --input input\_file.bmp --codec image --code --flows 4 --payload
+2000\\ --output output\_file.mdc\\\\
+mdc --input input\_file.mdc --codec image --decode --output
+new\_output\_file.bmp
+\end{code}
