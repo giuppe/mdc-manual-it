@@ -1,26 +1,23 @@
 \chapter{Analisi dei Requisiti}
-
-\section{Obiettivi del sistema}
-
-I principali obiettivi sono:
-
-\begin{itemize}
-\item progettazione e implementazione dei vari codec in un formato mdc-compatibile
-\item progettazione e implementazione di un protocollo per lo scambio dei
-flussi di dati in modo \emph{peer-to-peer} (chiamato MDSP)
-\item piattaforma per il test del sistema
-\end{itemize}
+\label{cap:analisi_requisiti}
 
 
 
-\section{Codifica}
+
+\section{Multiple Description Coding}
 
 
 Un \emph{codec} è un dispositivo (hardware o software) in grado di codificare e
 decodificare alcune informazioni in un formato di rappresentazione particolare.
 In genere il termine è usato in relazione a flussi multimediali (audio/video)
-processati tramite un elaboratore elettronico.
-Esistono molti modelli per la realizzazione di codec: u
+processati tramite un elaboratore elettronico. Esistono molti modelli per la
+realizzazione di codec; il più diffuso in questo momento, per lo streaming di
+flussi multimediali, è il Modello \emph{Layered}\footnote{Il Modello
+\emph{Layered} è alla base di codec come MPEG e derivati (MP3, DivX, ecc.)}. Un
+nuovo modello (\emph{Multiple Descriptions}) ha fatto da qualche anno la sua
+comparsa: prevede una diversa organizzazione delle informazioni, che sembra più
+indicata per reti con una alta probabilità d'errore e senza supporto per la
+Quality-of-Service.
 
 
 \subsection{Modello \emph{Layered}}
@@ -28,15 +25,14 @@ Il Modello \emph{Layered} prevede che i codec debbano suddividere un flusso
 multimediale in:
 \begin{itemize}
   \item uno ``strato base'' (\emph{Base Layer})
-  \item diversi ``strati di avanzamento'' (\emph{Enhancement Layers}) 
+  \item diversi ``strati avanzati'' (\emph{Enhanced Layers}) 
 \end{itemize}
 
-Il principio è che gli \emph{Enhancement Layers}, essendo non necessari, possano
+Il principio è che gli \emph{Enhanced Layers}, essendo non necessari, possano
 essere inviati solo a chi ne fa specifica richiesta, per aumentare la
 qualità del flusso.
 
-Questo tipo di approccio, anche se molto diffuso\footnote{Il Modello
-\emph{Layered} è alla base di codec come MPEG e derivati (MP3, DivX, ecc.)},
+Questo tipo di approccio, anche se molto diffuso,
 presenta alcune problematiche.
 
 I flussi multimediali generalmente vengono trasmessi tramite reti che non
@@ -78,41 +74,16 @@ informativo in termini di quantità, mentre nei codec 'layered' esiste un
 frammento 'base', più importante degli altri, e diversi frammenti più piccoli di
 'avanzamento'.
 
+\section{Obiettivi del sistema}
 
+I principali obiettivi sono:
 
-\section{MDSP}
-
-
-MDSP sta per Multiple Description Stream Protocol, ed è un protocollo per lo
-scambio di stream di vario tipo (contenuti multimediali) organizzati secondo una
-meta-codifica a descrittori multipli.
-
-\begin{figure}[hb]
-\includegraphics[width=0.90\textwidth]{../images/network_mdc.png}
-\label{fig:network_mdc}
-\caption{Modello di rete basata su MDC}
-\end{figure}
-
-Tale protocollo è concepito per avere le seguenti caratteristiche:
 \begin{itemize}
-  \item ogni messaggio è indipendente dagli altri
-  \item nessuna ritrasmissione dei messaggi errati o mancanti
-  \item nessun tipo di controllo di errore
-  \item nessun tipo di controllo di flusso 
+\item progettazione e implementazione dei vari codec in un formato mdc-compatibile
+\item progettazione e implementazione di un protocollo per lo scambio dei
+flussi di dati in modo \emph{peer-to-peer} (chiamato MDSP)
+\item implementazione di una piattaforma per il test del sistema
 \end{itemize}
-
-Le ultime tre caratteristiche, se necessarie, possono essere gestite a livelli
-più alti dello stack protocollare.
-
-
-
-\subsection{Canali}
-Devono essere previsti ``canali'' per il trasporto di due tipi di informazioni:
-\begin{itemize}
-  \item \emph{messaggi di controllo}: per la gestione della rete
-  \item \emph{dati}: i contenuti scambiati dagli utenti
-\end{itemize}
-
 
 
 
@@ -147,10 +118,11 @@ codec reali, sia classi di utilità, come il registro dei codec, utilizzato per 
 \subsection{Implementazione}
 
 
-Il testbed è stato sviluppato in C/C++, anche se, seguendo le specifiche, è
-possibile implementare una qualunque parte del sistema con qualsiasi linguaggio.
-
-\`E stato sviluppato un client in python.
+Il testbed è stato sviluppato in C/C++, anche se, seguendo le specifiche del
+protocollo, è possibile implementare una qualunque parte del sistema con
+qualsiasi linguaggio. Come dimostrazione è stato sviluppato un client in
+python, che ha come scopo principale l'uso della piattaforma su dispositivi
+mobili (come Symbian e Windows Mobile).
 
 
 
