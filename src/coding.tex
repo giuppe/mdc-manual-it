@@ -135,7 +135,7 @@ testuale in alcuni punti che verranno di seguito analizzati:
 \begin{itemize}
   \item Durante la procedura di decodifica delle immagini, per ogni pixel
   non giunto a destinazione, MDSP versione 0.1 sostituisce un '\emph{pixel
-  fantasma}'. Il pixel di default ha componenti RGB = 0,255,0. Questa
+  fantasma}'. Il pixel di default ha componenti RGB = 0, 255, 0. Questa
   tipologia di pixel viene utilizzata al fine dell'esecuzione dell'algoritmo
   descritto nel prossimo punto. MDSP versione 0.1 non permette all'utente di
   modificare tale valore, ma ci si propone di realizzare un interfacciamento a tale opzione nelle prossime versioni.
@@ -144,7 +144,7 @@ testuale in alcuni punti che verranno di seguito analizzati:
   pixel originari a partire dai pixel reali più prossimi. Con tale affermazione
   si intente la procedura di approssimazione di un \emph{pixel fantasma} con i
   suoi vicini esclusivamente se i vicini sono pixel con valore RGB diverso da
-  0,255,0. Se un vicino possiede il valore RGB di defaul (se cioé è anch'esso
+  0, 255, 0. Se un vicino possiede il valore RGB di defaul (se cioé è anch'esso
   un \emph{pixel fantasma}) viene scartato e si passa all'analisi del vicino di
   secondo ordine. In tale evenienza l'algoritmo viene eseguito ricorsivamente.
   La funzione in questione è contenuta nel file
@@ -171,19 +171,23 @@ output. Le immagini seguenti sono relative alla richiesta, da parte di un peer,
 della trasmissione del file sorgente a massima risoluzione, ossia all'invio di
 tutte le descrizioni disponibili.
 
-\begin{figure}[ht]
-\includegraphics[width=0.50\textwidth]{../images/lena1.png}
-\includegraphics[width=0.50\textwidth]{../images/lena2.png}
-	\caption{Immagine sorgente (a sinistra), immagine ricevuta (a destra).}
-\includegraphics[width=0.50\textwidth]{../images/lena3.png}
-\includegraphics[width=0.50\textwidth]{../images/lena4.png}
-	\caption{Evidenziazione dei pixel mancanti (a sinistra), immagine dopo
-	l'interpolazione (a destra).}
+\begin{figure}[t]
+\centering
+\subfigure[\label{fig:lena1}]{\includegraphics[width=0.45\textwidth]{../images/lena1.png}}
+\subfigure[\label{fig:lena2}]{\includegraphics[width=0.45\textwidth]{../images/lena2.png}}
+	\caption{Immagine sorgente e immagine ricevuta.}
 \end{figure}
 
-La figura in alto a destra mostra la totalità di pixel correttamente
-ricevuti. Nella figura in basso a sinistra, in verde, è possibile notare i pixel
-mancanti. Si può notare che la figura finale (in basso a destra) presenta delle
+\begin{figure}[b]
+\centering
+\subfigure[\label{fig:lena3}]{\includegraphics[width=0.45\textwidth]{../images/lena3.png}}
+\subfigure[\label{fig:lena4}]{\includegraphics[width=0.45\textwidth]{../images/lena4.png}}
+	\caption{Evidenziazione dei pixel mancanti e immagine dopo l'interpolazione.}
+\end{figure}
+
+La figura \ref{fig:lena1} mostra la totalità di pixel correttamente
+ricevuti. Nella figura \ref{fig:lena3}, in verde, è possibile notare i pixel
+mancanti. La figura \ref{fig:lena4} presenta delle
 leggerissime imperfezioni (praticamente invisibili) dovute esclusivamente alla
 perdita dei pixel associati ai descrittori persi (17 su 195) durante il trasferimento. In tali zone dell'immagine è stato eseguito l'algoritmo di interpolazione.
 
