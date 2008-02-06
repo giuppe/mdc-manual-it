@@ -39,24 +39,24 @@ Di seguito vengono elencate e descritte tutte le opzioni dell'applicazione:
   completo.
   \item \texttt{--code}: (\emph{parametro obbligatorio}) indica
   l'operazione da effettuare, in questo caso codifica del file sorgente nel suo equivalente
-  '.mdc'.
+  `.mdc'.
   \item \texttt{--input}: (\emph{parametro obbligatorio}) indica
-  l'operazione da effettuare, in questo caso decodifica del file '.mdc' nel formato del file di
-  output.
+  l'operazione da effettuare, in questo caso decodifica del file `.mdc' nel
+  formato del file di output.
   \item \texttt{--codec}: (\emph{parametro obbligatorio}) specifica il tipo di
   codec da utilizzare. MDSP versione 0.1 può utilizzare un codec testuale (\emph{text})
   e un codec grafico (\emph{image}).
   \item \texttt{--flows}: specifica il numero di descrizioni in cui verrà
   codificato il file corgente. Tale opzione è utilizzabile esclusivamente insieme all'opzione
-  \emph{--code}, altrimenti verrà ignorata. \`E possibile specificare un numero
-  intero di descrizioni compreso tra 1 e 64, se tale opzione non viene
+  \texttt{--code}, altrimenti verrà ignorata. \`E possibile specificare un
+  numero intero di descrizioni compreso tra 1 e 64, se tale opzione non viene
   specificata MDSP procederà alla codifica del file sorgente utilizzando 2
   descrizioni.
   \item \texttt{--payload}: specifica una preferenza sulla quantità di dati che
   si desidera vengano trasportati in ogni descrittore. MDSP può modificare tale
   valore allorquando l'utente specifichi un valore non compatibile con le
   specifiche. Tale opzione è utilizzabile esclusivamente insieme all'opzione
-  \emph{--code}, altrimenti verrà ignorata. Se si utilizza il codec testuale
+  \texttt{--code}, altrimenti verrà ignorata. Se si utilizza il codec testuale
   tale valore può essere impostato in un intervallo compreso tra 25 e 55000
   (l'unità di misura è il carattere). In caso venga utilizzato il codec grafico
   l'intervallo ammesso è compreso tra 10 e 18330 (l'unità di misura è il
