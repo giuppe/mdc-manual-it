@@ -20,12 +20,10 @@ tipo di codec da utilizzare (\emph{text}). Nel paragrafo \ref{sec:opzioni} vengo
 tipo di codec da utilizzare (\emph{text}). Nel paragrafo \ref{sec:opzioni} vengono riportate tutte le opzioni disponibili.
   \item Modalità server: \texttt{mdc --daemon}\\ Lanciando da linea di comando
   MDSP versione 0.1 in modalità server, l'applicazione viene configurata come `erogatore di file' e si pone in ascolto
-sulle porte UDP 5551 per i segnali di controllo e 5552 per lo scambio dai dati.
+sulle porte UDP 5551 per i segnali di controllo e 5552 per lo scambio dai dati. Nel capitolo \ref{cap:protocollo} viene illustrato nel dettaglio il
+funzionamento e la configurazione della modalità di esecuzione server.
   \item Modalità client: \texttt{mdc}
 \end{itemize}
-
-Nel capitolo \ref{cap:protocollo} viene illustrato nel dettaglio il
-funzionamento e la configurazione della modalità di esecuzione `server'.
 
 \section{Opzioni}
 \label{sec:opzioni}
@@ -39,10 +37,10 @@ Di seguito vengono elencate e descritte tutte le opzioni dell'applicazione:
   completo.
   \item \texttt{--code}: (\emph{parametro obbligatorio}) indica
   l'operazione da effettuare, in questo caso codifica del file sorgente nel suo equivalente
-  `.mdc'.
+  \emph{`.mdc'}.
   \item \texttt{--input}: (\emph{parametro obbligatorio}) indica
-  l'operazione da effettuare, in questo caso decodifica del file `.mdc' nel
-  formato del file di output.
+  l'operazione da effettuare, in questo caso decodifica del file \emph{`.mdc'}
+  nel formato del file di output.
   \item \texttt{--codec}: (\emph{parametro obbligatorio}) specifica il tipo di
   codec da utilizzare. MDSP versione 0.1 può utilizzare un codec testuale (\emph{text})
   e un codec grafico (\emph{image}).
@@ -60,12 +58,11 @@ Di seguito vengono elencate e descritte tutte le opzioni dell'applicazione:
   tale valore può essere impostato in un intervallo compreso tra 25 e 55000
   (l'unità di misura è il carattere). In caso venga utilizzato il codec grafico
   l'intervallo ammesso è compreso tra 10 e 18330 (l'unità di misura è il
-  pixel). Se tale opzione non viene
-  specificata MDSP procederà alla codifica del file sorgente impostando il
-  parametro al valore 1000 indipendentemente dal codec utilizzato.
+  pixel). Se tale opzione non viene specificata MDSP procederà alla codifica
+  del file sorgente impostando il parametro al valore 1000 indipendentemente dal codec utilizzato.
   \item \texttt{--daemon}: avvia MDSP in modalità server.
   \item \texttt{--help}: visualizza una breve descrizione delle modalità
-  operative e dei parametri ammessi.
+  operative e dei parametri ammessi.\\
 \end{itemize}
 
 Esempi di utilizzo:
