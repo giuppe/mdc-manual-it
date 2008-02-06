@@ -22,36 +22,50 @@ Quality-of-Service.
 
 \subsection{Modello \emph{Layered}}
 Il Modello \emph{Layered} prevede che i codec debbano suddividere un flusso
-multimediale in:
+multimediale (vedi Figura \ref{fig:modello_layered}) in:
 \begin{itemize}
   \item uno ``strato base'' (\emph{Base Layer})
   \item diversi ``strati avanzati'' (\emph{Enhanced Layers}) 
 \end{itemize}
 
+\begin{figure}[hb]
+\includegraphics[width=0.90\textwidth]{../images/modello_layered.png}
+\label{fig:modello_layered}
+\caption{Modello Layered}
+\end{figure}
+
 Il principio è che gli \emph{Enhanced Layers}, essendo non necessari, possano
 essere inviati solo a chi ne fa specifica richiesta, per aumentare la
 qualità del flusso.
 
-Questo tipo di approccio, anche se molto diffuso,
-presenta alcune problematiche.
 
+Questo tipo di approccio, anche se molto diffuso, presenta alcune problematiche.
 I flussi multimediali generalmente vengono trasmessi tramite reti che non
 garantiscono il trasporto privo di errori (\emph{best effort}). Ogni pacchetto
 inviato ha una certa probabilità di giungere a destinazione corrotto, oppure di
 non arrivare affatto. Nel Modello \emph{Layered} questi errori potrebbero
-intaccare in pacchetto di un \emph{Enhancement Layer} oppure di un \emph{Base
-Layer}: nel primo caso si avrà solo una piccola perdita di qualità, mentre nel
-secondo caso si avranno conseguenze potenzialmente disastrose, come la perdita
-di continuità nel flusso. Se il flusso non è real-time, è possibile chiedere
-nuovamente alla sorgente il frammento danneggiato: un \emph{Base Layer} però
-contiene solitamente molte più informazioni, quindi è più oneroso
-ritrasmetterlo.
-Infine, gli \emph{Enhanchement Layers} hanno un senso solo se rapportati al
-loro strato base, quindi è necessario far si che giungano in istanti di
-tempo vicini: altrimenti sarebbero inutili.
+intaccare in pacchetto di un \emph{Enhanced Layer} oppure di un \emph{Base
+Layer}: nel primo caso si avrà solo una piccola perdita di qualità (vedi Figura
+\ref{fig:modello_layered_errori1}, mentre nel secondo caso si avranno
+conseguenze potenzialmente disastrose, come la perdita di continuità nel flusso
+(vedi Figura \ref{fig:modello_layered_errori2}. Se il flusso non è real-time, è
+possibile chiedere nuovamente alla sorgente il frammento danneggiato: un \emph{Base Layer} però contiene solitamente molte più informazioni, quindi è più oneroso ritrasmetterlo.
+Infine, gli \emph{Enhanced Layers} hanno un senso solo se rapportati al loro
+strato base, quindi è necessario far si che giungano in istanti di tempo vicini:
+altrimenti sarebbero inutili.
 
+\begin{figure}[h]
+\includegraphics[width=0.90\textwidth]{../images/modello_layered_errori1.png}
+\label{fig:modello_layered_errori1}
+\caption{Modello Layered: perdita di un ``Enhanced Layer''}
+\end{figure}
 
-%TODO: inserire immagine sul modello layered
+\begin{figure}[h]
+\includegraphics[width=0.90\textwidth]{../images/modello_layered_errori2.png}
+\label{fig:modello_layered_errori2}
+\caption{Modello Layered: perdita di un ``Base Layer''}
+\end{figure}
+
 
 \subsection{Modello \emph{Multiple Descriptions}}
 
@@ -63,8 +77,11 @@ Il Multiple Description Coding prevede che:
 \item se vengono ricevuti due o più sotto-flussi, la qualità dell'informazione decodificata aumenta 
 \end{enumerate}
 
-TODO: inserire immagine sul modello mdc
-
+\begin{figure}[h]
+\includegraphics[width=0.90\textwidth]{../images/modello_mdc.png}
+\label{fig:modello_mdc}
+\caption{Modello Multiple Description Coding}
+\end{figure}
 \subsection{Differenze tra MDC e Layered}
 
 La principale differenza tra la tipologia di codifica 'a descrizioni multiple' e
