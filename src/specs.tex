@@ -1,0 +1,46 @@
+\chapter{Specifiche}
+Nella presente appendice vengono riportate le specifiche del protocollo di
+comunicazione relative al Multiple Description Stream ed al singolo Descrittore.
+
+\section{Multiple Description Stream}
+\begin{center} \begin{tabular}{|c|c|}
+\hline
+Byte dimension & Content description\\
+\hline \hline
+32 bytes & stream\_id (hash md5 of the stream in version = 0)\\
+1 byte & flows number\\
+4 byte & max sequences number\\
+2 byte &descriptor size\\
+?? & descriptor\\
+\ldots & \ldots\\
+\hline
+\end{tabular} \end{center}
+Last two rows must be repeated for each valid descriptor.
+
+\section{MDC Descriptor}
+A file is divided into 1-64 flows each containing a part of file. All flows contains
+approssimatively the same quantity of data. Any difference can be seen between last flow and
+others. Each flow contain any descriptors. All flows contains the same number of descriptors.
+Each descriptor contains approssimatively the same quantity of data correlated to its flow.
+Any difference can be seen between last descriptor of the last flow and the overall other
+descriptors. Each descriptor is formed as the follow:\\
+\\
+(entries larger than 1 byte are big-endian)\\
+
+\begin{center} \begin{tabular}{|c|c|}
+\hline
+Byte dimension & Content description\\
+\hline \hline
+3 bytes & ``MDC"\\
+1 byte & version (== 0)\\
+4 bytes & message type (eg. ``DESC'')\\
+32 bytes & stream\_id (hash md5 of the stream in version = 0)\\
+1 byte & flow\_id\\
+4 bytes & sequence\_number\\
+1 byte & codec type\\
+4 bytes & codec parameters size\\
+?? & codec parameters (depends on codec)\\
+2 bytes & payload size\\
+?? & payload\\
+\hline
+\end{tabular} \end{center}
