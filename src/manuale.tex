@@ -61,15 +61,54 @@ Di seguito vengono elencate e descritte tutte le opzioni dell'applicazione:
   pixel). Se tale opzione non viene specificata MDSP procederà alla codifica
   del file sorgente impostando il parametro al valore 1000 indipendentemente dal codec utilizzato.
   \item \texttt{--daemon}: avvia MDSP in modalità server.
+  \item \texttt{--connect}: specifica l'indirizzo IP del ``server'' al quale MDSP
+  dovrà collegarsi quando opera in modalità ``client''.
   \item \texttt{--help}: visualizza una breve descrizione delle modalità
   operative e dei parametri ammessi.\\
 \end{itemize}
+Lanciando MDSP senza la specifica di alcun parametro viene avviata
+l'applicazione in modalità ``client'' attendendo una connessione con un peer
+il cui inirizzo IP può essere fornito da linea di comando. In assenza del
+parametro \texttt{--connect} viene caricato per dafeult l'IP 192.168.0.30.
 
+\section{Configurazione}
+Di seguito viene brevemente descritto il file di configurazione XML che
+memorizza i parametri principali necessari al funzionamento di MDSP. Tale file
+è contenuto nella directory principale dell'applicazione con nome
+\texttt{config.xml}. A titolo di esempio viene descritto il seguente file:
+
+\begin{code}
+<network>\\
+    <control\_port>5551</control\_port>\\
+    <data\_port>5552</data\_port>\\
+</network>\\
+<repository>\\
+    <path>./shared</path>\\
+</repository>\\
+<server>\\
+    <address>192.168.0.30</address>\\
+</server>\\
+\end{code}
+
+La sezione \texttt{<network>} contiene il numero delle porte di controllo e
+dati che vengono utilizzate dal sistema. La sezione \texttt{<repository>}
+contiene la directory nella quale verrà salvato il file codificato. Infine la
+sezione \texttt{<server>} contiene l'indirizzo IPv4 necessario alla eventuale
+modalità di funzionamento ``client'' dell'applicazione. L'ultima sezione
+non è obbligatoria. \`E infatti possibile fornire un indirizzo IP anche da
+linea di comando tramite l'opzione di comando \texttt{--connect}, nel caso in
+cui tale opzione non venga specificata verrà caricato il valore di default
+contenuto nel file di configurazione. Nel caso in cui anche il file di
+configurazione non contenga alcun indirizzo IP viene segnalato all'utente
+l'errore provocatosi e viene automaticamente impostato il valore 192.168.0.30
+nel file di configurazione. Sarà quindi necessario un riavvio dell'applicazione.
+\\\\
 Esempi di utilizzo:
 
 \begin{code}
 mdc --input input\_file.bmp --codec image --code --flows 4 --payload
 2000\\ --output output\_file.mdc\\\\
+mdc --connect 192.168.0.124\\\\
 mdc --input input\_file.mdc --codec image --decode --output
 new\_output\_file.bmp
 \end{code}
