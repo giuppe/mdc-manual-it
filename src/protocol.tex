@@ -5,9 +5,9 @@
 \section{Progettazione}
 
 
-MDSP sta per Multiple Description Stream Protocol, ed è un protocollo per lo
-scambio di stream di vario tipo (contenuti multimediali) organizzati secondo una
-meta-codifica a descrittori multipli.
+MDSP è l'acronimo di Multiple Description Stream Protocol, un protocollo
+per lo scambio di stream di vario tipo (contenuti multimediali) organizzati secondo una
+meta-codifica a descrizioni multiple.
 
 \begin{figure}[hb]
 \includegraphics[width=0.90\textwidth]{../images/network_mdc.png}
@@ -15,7 +15,7 @@ meta-codifica a descrittori multipli.
 \caption{Modello di rete basata su MDC}
 \end{figure}
 
-Tale protocollo è concepito per avere le seguenti caratteristiche:
+Tale protocollo è concepito per possedere le seguenti caratteristiche:
 \begin{itemize}
   \item ogni messaggio è indipendente dagli altri
   \item nessuna ritrasmissione dei messaggi errati o mancanti
@@ -183,7 +183,8 @@ di descrittori, con la stessa relazione che c'è tra un filmato e un fotogramma.
 
 Il Descriptor contiene varie informazioni, come il flusso originario, il numero
 di descrizione, e la sequenza temporale. Il payload non è definito e pertanto è
-permessa una maggiore libertà in fase di definizione dei codec.
+permessa una maggiore libertà in fase di definizione dei codec (vedasi
+paragrafo \ref{sec:esempio_codec}).
 
 \subsection{Casi d'uso}
 

@@ -2,7 +2,7 @@
 \label{cap:codec}
 \section{Introduzione}
 Il paradigma di protocollo di streaming a descrittori multipli rende
-necessaria la progettazione di codec su misura. Viene rimandata al capitolo
+necessaria la progettazione di codec su misura. Viene rimandata al paragrafo
 \ref{cap:implementazione_codec} la presentazione, a titolo esplicativo, del
 \emph{codec testuale}.
 
@@ -87,41 +87,42 @@ e alcune semplici formule per poterli colcolare:
 \end{itemize}
 Tali accorgimenti non sono da soli sufficienti per la realizzazione di un codec
 pienamente compatibile MDC, ulteriori accorgimenti verranno illustrati con
-maggiore dettaglio nel capitolo \ref{sec:esempio_codec}.
+maggiore dettaglio nel paragrafo \ref{sec:esempio_codec}.
 
 La struttura delle classi C++ di gestione dei codec comprende classi astratte
 che regolano lo scambio di dati tra i codec e il motore di streaming, nonché la
-composizione delle strutture dati in memoria da utilizzare. Le classi a cui ci si riferisce sono contenute nella directory \textit{mdc/src/codecs/}. Di
-seguito vengono elencate e brevemente descritte le classi astratte per la
+composizione delle strutture dati in memoria da utilizzare. Le classi a cui ci
+si riferisce sono contenute nella directory \texttt{mdc/src/codecs/}. Di seguito vengono elencate e brevemente descritte le classi astratte per la
 gestione dei codec:
 \begin{itemize}
  \item \textit{abstract\_codec\_parameter.h}: astrae i parametri del codec; per
  utilizzare tale classe è necessario specificare il comportamento di essa nelle
- funzioni \textit{serialize()} e \textit{deserialize()}.
- \item \textit{abstract\_md\_codec.h}: astrae il funzionamento del codec a
+ funzioni \texttt{serialize()} e \texttt{deserialize()}.
+ \item \texttt{abstract\_md\_codec.h}: astrae il funzionamento del codec a
  descrizioni multiple; per utilizzare tale classe è necessario specificare il
- comportamento di essa nelle funzioni \textit{code()} e \textit{decode()}. In
+ comportamento di essa nelle funzioni \texttt{code()} e \texttt{decode()}. In
  tali funzioni è contenuto il cuore del codec e pertanto necessitano un'analisi
- più dettagliata, si rimanda al capitolo \ref{sec:esempio_codec}.
+ più dettagliata, si rimanda al paragrafo \ref{sec:esempio_codec}.
  \item \textit{abstract\_stream.h}: astrae la gestione dei dati specifici per il
  tipo di file sorgente considerato; per utilizzare tale classe è necessario
- specificare il comportamento di essa nelle funzioni \textit{load\_from\_disk()}
- e \textit{save\_to\_disk()}.
+ specificare il comportamento di essa nelle funzioni \texttt{load\_from\_disk()}
+ e \texttt{save\_to\_disk()}.
 \end{itemize}
 
 Di seguito vengono brevemente illustrati gli stralci di due file
 testuali, il primo è il file sorgente e viene codificato in 4 descrizioni,
 mentre il secondo è il file decodificato. A titolo dimostrativo viene riportata
-la porzione di testo in cui una descrizione su 4 è andata perduta durante il
+la porzione di testo in cui sonostati persi alcuni descrittori durante il
 trasferimento:
 
 \begin{itemize}
   \item \emph{``Se mai si racconterà la mia storia, si dica che ho camminato
   coi Giganti. Gli uomini sorgono e cadono come grano invernale, ma questi nomi non periranno mai. Si dica che ho vissuto al tempo di Ettore, domatore di cavalli... Si dica... che ho vissuto al tempo di Achille...'' (Ulisse - Troy)}
-  \item \emph{``Se mai si  acc nte à l  mi  st ria  si dic  ch  ho cam ina o c
-  i G gan i.  li  omi i s rgo o e cad no  ome gra o i ver ale  ma que ti  omi  
-  non per ran o m i.  i d ca  he  o v ssu o a  te po  i E tor , d mat re  i
-  c val i..  Si dic ... che ho  iss to  l t mpo di  chi le. .''  Uli se   Tr y)}
+  \item \emph{``Se mai si  acc nte à la mia storia, si dica che ho camminato
+  coi Giganti.  li  omi i sorgono e cad no come grano i ver ale  ma questi  omi
+  non periranno mai. Si dica  he  o vissuto al te po  i Ettore, d mat re di
+  cavalli... Si dic ... che ho vissuto al tempo di Achille...''  Uli se   Tr
+  y)}
 \end{itemize}
 
 Si può notare la presenza del carattere \emph{spazio} al posto delle lettere
@@ -134,8 +135,8 @@ testuale in alcuni punti che verranno di seguito analizzati:
 
 \begin{itemize}
   \item Durante la procedura di decodifica delle immagini, per ogni pixel
-  non giunto a destinazione, MDSP versione 0.1 sostituisce un '\emph{pixel
-  fantasma}'. Il pixel di default ha componenti RGB = 0, 255, 0. Questa
+  non giunto a destinazione, si sostituisce un '\emph{pixel
+  fantasma}'. Tale pixel di default ha componenti RGB = (0, 255, 0). Questa
   tipologia di pixel viene utilizzata al fine dell'esecuzione dell'algoritmo
   descritto nel prossimo punto. MDSP versione 0.1 non permette all'utente di
   modificare tale valore, ma ci si propone di realizzare un interfacciamento a tale opzione nelle prossime versioni.
@@ -144,12 +145,11 @@ testuale in alcuni punti che verranno di seguito analizzati:
   pixel originari a partire dai pixel reali più prossimi. Con tale affermazione
   si intente la procedura di approssimazione di un \emph{pixel fantasma} con i
   suoi vicini esclusivamente se i vicini sono pixel con valore RGB diverso da
-  0, 255, 0. Se un vicino possiede il valore RGB di defaul (se cioé è anch'esso
-  un \emph{pixel fantasma}) viene scartato e si passa all'analisi del vicino di
-  secondo ordine. In tale evenienza l'algoritmo viene eseguito ricorsivamente.
-  La funzione in questione è contenuta nel file
-  \textit{mdc/src/codecs/image/image\_stream.cpp} con il nome
-  \textit{interpolate\_pixels()}
+  (0, 255, 0). Se un vicino possiede il valore RGB di default (se cioé è
+  anch'esso un \emph{pixel fantasma}) viene scartato e si passa all'analisi del vicino di
+  secondo ordine. La funzione in questione è contenuta nel file
+  \texttt{mdc/src/codecs/image/image\_stream.cpp} con il nome
+  \texttt{interpolate\_pixels()}
   \item Il formato di trasmissione dei pixel segue il formato della maschera,
   quindi RGB in quest'ordine. Nella realizzazione di questo tipo di codec è
   necessario gestire anche l'endianless e far sì che l'MD stream venga
@@ -162,14 +162,14 @@ immagini che possiedono una maschera di colori esclusivamente a 24 bit e di
 file in formato BMP non compresso. Eventuali versioni future di MDSP potrebbero
 supportare immagini di formato diverso e con diverse profondità di colore.
 
-Differentemente dal testo, l'immagine sorgente è stata codificata e
+L'immagine sorgente di esempio è stata codificata e
 inviata al destinatario, successivamente è stata decodificata. La perdita di descrittori è casuale e dovuta alla congestione o inefficienza della rete. Tutte le 4 descrizioni in cui è stata codificata
 l'immagine sorgente sono state correttamente decodificate. Di seguito vengono
 brevemente illustrate alcune immagini che permettono l'immediata visione del
 funzionamento del codec nel suo complesso, l'immagine \ref{fig:lena1} è il file
 sorgente e viene codificato in 4 descrizioni, mentre l'immagine \ref{fig:lena4}
-è il file di output. Le immagini seguenti si fireiscono alla richiesta, da parte
-di un peer, della trasmissione del file sorgente a massima risoluzione, ossia all'invio di tutte le descrizioni disponibili.
+è il file di output. Le immagini seguenti si riferiscono alla richiesta, da
+parte di un peer, della trasmissione del file sorgente a massima risoluzione, ossia all'invio di tutte le descrizioni disponibili.
 
 \begin{figure}[t]
 \centering
@@ -187,14 +187,12 @@ di un peer, della trasmissione del file sorgente a massima risoluzione, ossia al
 
 La figura \ref{fig:lena2} mostra la totalità di pixel correttamente
 ricevuti. Nella figura \ref{fig:lena3}, in verde, è possibile notare i pixel
-mancanti. La figura \ref{fig:lena4} presenta delle
-leggerissime imperfezioni (praticamente invisibili) dovute esclusivamente alla
-perdita dei pixel associati ai descrittori persi (17 su 195) durante il trasferimento. In tali zone dell'immagine è stato eseguito l'algoritmo di interpolazione.
+mancanti. La figura \ref{fig:lena4} presenta leggerissime imperfezioni
+(praticamente invisibili) dovute esclusivamente alla perdita dei pixel associati ai descrittori persi durante il trasferimento. In tali zone dell'immagine è stato eseguito l'algoritmo di interpolazione.
 
-Di seguito viene, invece, mostrato il funzionamento del codec grafico
-nel caso in cui viene richiesta la trasmissione a bassa qualità. In figura
-\ref{fig:occhi} è illustrato in dettaglio il funzionamento dell'algoritmo di interpolazione. I pixel non correttamente
-ricevuti vengono sostituiti con pixel predetti in base alle componenti di
+In figura \ref{fig:occhi}, invece, è mostrato il funzionamento del codec grafico
+nel caso in cui viene richiesta la trasmissione a bassa qualità. \`E illustrato
+in dettaglio il funzionamento dell'algoritmo di interpolazione. I pixel non correttamente ricevuti vengono sostituiti con pixel predetti in base alle componenti di
 colore dei pixel vicini. L'opacità accentuata di alcuni pixel è dovuta alla
 quantità non sufficiente di pixel validi su cui effettuare la previsione.
 
@@ -208,7 +206,7 @@ quantità molto esigua di pixel validi (caso peggiore), tuttavia è ancora
 possibile scorgere l'immagine originale ed il suo contenuto visivo. L'immagine sorgente possiede
 una larghezza di 512 pixel, tale dimensione (multipla del numero di flussi
 trascurati durante il trasferimento) fa sì che i pixel mancanti si dispongano
-secondo linee verticali. \`E possibile però apprezzare la robustezza del
+secondo linee verticali. \`E possibile apprezzare la robustezza del
 sistema di trasmissione e di codifica/decodifica di MDSP che mantiene il contenuto informativo di un file
 grafico nonostante la quantità di informazioni richiesta per la sua descrizione
 sia fortemente insufficiente ed in parte errata.
@@ -233,10 +231,11 @@ Uint32 descriptors\_number = \\(Uint32)ceil(((double)flow\_dimension)/((double)m
 Uint16 max\_payload\_size = (flow\_dimension/descriptors\_number)+1;\\
 \end{code}
 
-Innanzitutto è necessario calcolare dimensione e numero di flussi e
+Innanzitutto è necessario calcolare dimensione dei flussi, numero di flussi e
 descrittori. Il numero di descrittori da generare viene calcolato tenendo conto
 della \emph{dimensione preferita}, impostata dall'utente tramite linea di
-comando con il parametro \emph{--payload}; viene altresì utilizzata la dimensione predefinita nel caso non venga impostato alcun parametro. Si tratta di un parametro \emph{preferito} poiché il codec ha l'obiettivo di generare \emph{N} flussi sui quali devono essere distribuiti in modo possibilmente eguale i dati del file sorgente. Il parametro \textit{max\_payload\_size} ha quindi il compito di bilanciare il carico tra i flussi.
+comando con il parametro \texttt{--payload} (vedi paragrafo \ref{sec:opzioni});
+viene altresì utilizzata la dimensione predefinita nel caso non venga impostato alcun parametro. Si tratta di un parametro \emph{preferito} poiché il codec ha l'obiettivo di generare \emph{N} flussi sui quali devono essere distribuiti in modo possibilmente eguale i dati del file sorgente. Il parametro \textit{max\_payload\_size} ha quindi il compito di bilanciare il carico tra i flussi.
 
  \item \begin{code}
 md\_stream->init(stream->compute\_hash\_md5(), m\_flows\_number, descriptors\_number);\\
@@ -282,13 +281,13 @@ quest'ultimo viene accodato al descrittore che adesso risulterà completo.
  \item \begin{code}
 md\_stream->set\_descriptor(descriptor);\\
 \end{code}
-Infine, l'N-esimo descrittore viene accodato al Multiple Description Stream per poter successivamente essere inviato.
+Infine, l'N-esimo descrittore viene accodato al Multiple Description Stream per poter essere inviato.
 \end{itemize}
 In appendice è riportato il codice completo della funzione di codifica testuale
 appena descritta.
 
-\section{Decodifica:}
 
+\section{Decodifica:}
 
 \begin{itemize}
  \item \begin{code}
@@ -338,7 +337,7 @@ else\{\\
 	offset += flows\_number*k;\\
 \}\\
 \end{code}
-Nel caso in cui il descrittore corrente, per qualunque motivo, non sia valido vengono calcolate tutte le posizioni nello stream finale relative alle lettere contenute nel suo payload che sono considerate perse. Al loro posto vengono sostituiti dei caratteri `\emph{spazio}'. Esclusa quest'ultima variazione, l'algoritmo rimane del tutto simile a quanto visto sin'ora.
+Nel caso in cui il descrittore corrente, per qualunque motivo, non sia valido vengono calcolate tutte le posizioni nello stream finale relative alle lettere contenute nel suo payload che sono considerate perse. Al loro posto vengono sostituiti dei caratteri `\emph{spazio}'.
 
  \item \begin{code}
 MemDataChunk* taken\_dc = new MemDataChunk();\\
@@ -359,6 +358,6 @@ stream->set\_data(*taken\_dc);\\
 \end{code}
 Il comando finale riempie lo stream con le lettere presenti nella struttura dati appena preparata.
 \end{itemize}
-In appendice è riportato il codice completo della funzione di codifica testuale
-appena descritta.
+In appendice \ref{cap:decode} è riportato il codice completo della funzione di
+codifica testuale appena descritta.
 

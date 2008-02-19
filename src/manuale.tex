@@ -1,6 +1,6 @@
 \chapter{Manuale}
 Nel presente capitolo verranno illustrati i principali comandi per la
-transcodifica e la gestione del protocollo MDSP.
+transcodifica e la gestione dell'applicazione.
 
 \section{Comandi principali}
 I principali comandi riguardanti l'applicazione MDSP versione 0.1 sono relativi
@@ -22,7 +22,11 @@ tipo di codec da utilizzare (\emph{text}). Nel paragrafo \ref{sec:opzioni} vengo
   MDSP versione 0.1 in modalità server, l'applicazione viene configurata come `erogatore di file' e si pone in ascolto
 sulle porte UDP 5551 per i segnali di controllo e 5552 per lo scambio dai dati. Nel capitolo \ref{cap:protocollo} viene illustrato nel dettaglio il
 funzionamento e la configurazione della modalità di esecuzione server.
-  \item Modalità client: \texttt{mdc}
+  \item Modalità client: \texttt{mdc --connect}\\ Il parametro
+  \texttt{--connect} è opzionale e specifica l'indirizzo IPv4 del server al
+  quale si intende collegarsi. In assenza del parametro MDSP versione 0.1
+  caricherà l'IP di default specificato all'interno del file di configurazione
+  \texttt{config.xml} (vedasi paragrafo \ref{cap:xml}).
 \end{itemize}
 
 \section{Opzioni}
@@ -66,12 +70,17 @@ Di seguito vengono elencate e descritte tutte le opzioni dell'applicazione:
   \item \texttt{--help}: visualizza una breve descrizione delle modalità
   operative e dei parametri ammessi.\\
 \end{itemize}
-Lanciando MDSP senza la specifica di alcun parametro viene avviata
-l'applicazione in modalità ``client'' attendendo una connessione con un peer
+
+\begin{notabene}
+Lanciando MDSP senza la specifica di alcun parametro viene
+avviata l'applicazione in modalità ``client'' attendendo una connessione con un peer
 il cui inirizzo IP può essere fornito da linea di comando. In assenza del
-parametro \texttt{--connect} viene caricato per dafeult l'IP 192.168.0.30.
+parametro \texttt{--connect} viene caricato per dafeult l'IP 192.168.0.30
+(specificato nel file di configurazione \texttt{config.xml}, vedere paragrafo \ref{cap:xml}).
+\end{notabene}
 
 \section{Configurazione}
+\label{cap:xml}
 Di seguito viene brevemente descritto il file di configurazione XML che
 memorizza i parametri principali necessari al funzionamento di MDSP. Tale file
 è contenuto nella directory principale dell'applicazione con nome

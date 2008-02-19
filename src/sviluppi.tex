@@ -5,8 +5,28 @@ corrente, ma potrebbero avere sviluppi futuri interessanti.
 
 
 \section{Web cooperativo}
+In fase di progettazione è stata presa in considerazione la possibilità di un
+eventuale utilizzo delle tecniche di codifica/decodifica MD compatibili
+applicate ai contenuti web. Partendo dai pressupposti di funzionamento di MDSP
+è possibile lo sviluppo futuro di un'applicazione il cui obiettivo sia quello
+di effettuare il download di un'intera pagina web i cui contenuti siano file
+testuali, grafici, o qual si voglia, tutti codificati secondo le specifiche MDC.
+Tali contenuti web si potrebbero a quel punto scambiare tra più peer
+permettendo così di realizzare una particolare forma di \emph{navigazione web
+cooperativa}. Anche se in via del tutto prematura è auspicabile un sistema di ritrasmissione di descrittori eventualmente persi per quei file dal
+'contenuto sensibile' quali, ad esempio, file '\emph{.html}'o '\emph{.php}'. In
+quest'ultima considerazione si deve tenere conto della necessità di assoluta
+assenza di errori per file di questo tipo, in quanto la presenza di un errore
+può provocare il malfunzionamento di una \emph{marcatura} o di uno script fino
+all'eventuale corruzione totale del file. Va inoltre considerata l'eventualità
+della creazione di un sistema di sicurezza che non permetta lo scambio di
+descrittori relativi a file personali dell'utente: non è ammissibile il
+download cooperativo di file relativi, ad esempio, alla posta elettronica. Al
+limite è ammissibile uno scenario cooperativo in cui i descrittori presi in
+considerazione vengano crittografati e poi scambiati.
 
 \section{Codec video}
+\label{cap:codec_video}
 Durante la realizzazione del codec testuale e del codec grafico, si è presa in
 considerazione la possibile realizzazione futura di un codec video.
 
@@ -44,13 +64,13 @@ codificati con algoritmi 'layered'. Le possibili soluzioni sono le seguenti:
 \begin{itemize}
   \item Realizzazione di un codec \emph{MDC puro}: ossia un codec per la cui
   realizzazione è richiesta la conversione del file codificato in un file RAW e
-  la sua successiva codifica secondo gli standard MDC.
+  la sua successiva codifica secondo gli standard MD.
   \item Realizzazione di un codec \emph{ibrido}: ossia un codec che riesca a
   'spacchettare' la codifica layered, estragga i dati utili e li utilizzi per
   creare descrizioni virtualmente indipendenti.
 \end{itemize}
 
-La prima di tali soluzioni rispetta pienamente le spacifiche MDC in quanto
+La prima di tali soluzioni rispetta pienamente le specifiche MDC in quanto
 permette di manipolare più facilmente i dati del file sorgente per creare
 descrizioni multiple. Non è però facilmente applicabile a causa della
 disponibilità estremamente esigua di documentazione in letteratura a riguardo. Richiede
@@ -70,8 +90,16 @@ di arricchimento. \`E però indiscutibile l'eventuale enorme diffusione che avre
 tale codec in quanto permetterebbe l'immediata impiegabilità con la quasi totalità dei file video oggi esistenti.
 
 \section{Codec audio}
+Anche le informazioni audio vengono oggi codificate seguendo il modello
+layered, così come accade per i contenuti video. Anche in questo caso, quindi,
+è necessario far proprie tecniche di decodifica la cui applicazione comporta
+alcuni problemi teorico/pratici già descritti in appendice
+\ref{cap:codec_video}.
 
 \section{Rete distribuita}
+I presupposti di funzionamento del protocollo MDSP sono stati
+scelti nell'ottica di un eventuale utilizzo anche in reti distribuite con presenza di
+errori e/o topologie variabili.
 
 \subsection{Ad-Hoc Networks}
 Le reti Ad-Hoc sono caratterizzate dalla mancanza di una \emph{autorità}
@@ -84,5 +112,17 @@ MDSP supporta questo approccio, permettendo richieste di ``frammenti'' di
 flussi multimediali a più nodi contemporaneamente.
 
 \section{Regolazione della banda}
+\`E inoltre possibile realizzare un modulo di regolazione di banda. Durante il
+trasferimento di un file può essere necessario modificare la banda utilizzata. \`E pensabile la progettazione di un modulo a supporto
+dell'applicazione che monitorizzi la banda disponibile, il quantitativo di file
+richiesti o la qualità di ricezione e adegui la richiesta delle descrizioni in
+modo tale da rispettare i vincoli presi in esame.
 
 \section{Applicazioni destinate all'utente non esperto}
+Infine, ma per questo non meno importante, si rimanda a sviluppi futuri la
+creazione di una interfaccia grafica che guidi in modo amichevole l'utente nei
+passi di configurazione dell'applicazione, dell'esecuzione della stessa e
+durante le fasi di codifica/decodifica. In futuro sarebbe possibile la
+creazione di un'applicazione esclusivamente dedicata allo scambio di file
+\emph{``.mdc''}, e quindi completamente general purpose, al pari di altri
+sistemi peer-to-peer già esistenti.
